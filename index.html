@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Muchhad - The Authentic Heritage</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Lora:ital,wght@0,400..700;1,400..700&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap" rel="stylesheet"/>
+
+  <!-- Material Symbols -->
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary":          "#D4AF37",
+            "background-light": "#EAE0D5",
+            "background-dark":  "#3E2723",
+            "surface":          "#D6C5B3",
+            "text-main":        "#3E2723",
+            "text-muted":       "#795548",
+            "accent":           "#8FBC8F"
+          },
+          fontFamily: {
+            "display": ["Fraunces", "serif"],
+            "body":    ["Lora", "serif"],
+            "news":    ["Newsreader", "serif"]
+          },
+          borderRadius: {
+            "DEFAULT": "0px",
+            "lg":      "0px",
+            "xl":      "0px",
+            "full":    "9999px"
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* ---------- Global ---------- */
+    body {
+      background-color: #EAE0D5;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+    }
+
+    /* Paper overlay (fixed noise on top of everything) */
+    .paper-overlay {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 999;
+      opacity: 0.10;
+      mix-blend-mode: multiply;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+    }
+
+    /* ---------- Scroll bounce ---------- */
+    @keyframes bounce-slow {
+      0%, 100% { transform: translateY(-25%); animation-timing-function: cubic-bezier(0.8,0,1,1); }
+      50%       { transform: translateY(0);   animation-timing-function: cubic-bezier(0,0,0.2,1); }
+    }
+    .animate-bounce-slow { animation: bounce-slow 2s infinite; }
+
+    /* ---------- Fade-up ---------- */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-up { animation: fadeUp 1s ease-out forwards; }
+
+    /* ---------- Rough underline ---------- */
+    .rough-underline { position: relative; display: inline-block; }
+    .rough-underline::after {
+      content: '';
+      position: absolute;
+      bottom: -4px; left: 0;
+      width: 100%; height: 3px;
+      background-color: #3E2723;
+      border-radius: 50% 50% 50% 50% / 10% 10% 90% 90%;
+      transform: rotate(-1deg);
+    }
+
+    /* ---------- Product card tilts ---------- */
+    .tilt-1 { transform: rotate(-1deg); }
+    .tilt-2 { transform: rotate(1.5deg); }
+    .tilt-3 { transform: rotate(-0.5deg); }
+    .tilt-4 { transform: rotate(1deg); }
+
+    /* ---------- Team card ---------- */
+    .team-card {
+      border: 2px solid #3E2723;
+      transition: all 0.3s ease;
+    }
+    .team-card:hover {
+      background-color: #e0b629;
+      transform: translateY(-4px);
+      box-shadow: 4px 4px 0px #3E2723;
+    }
+    .team-card:hover img {
+      filter: sepia(0.8) hue-rotate(330deg) saturate(1.5) contrast(1.2);
+    }
+    .sepia-img {
+      filter: sepia(0.6) contrast(1.1);
+      transition: filter 0.3s ease;
+    }
+
+    /* ---------- Hard border util ---------- */
+    .hard-border { border: 2px solid #3E2723; }
+
+    /* ---------- Smooth scroll ---------- */
+    html { scroll-behavior: smooth; }
+  </style>
+</head>
+
+<body class="font-body text-text-main overflow-x-hidden min-h-screen">
+
+  <!-- Paper noise overlay -->
+  <div class="paper-overlay"></div>
+
+  <!-- ============================================================
+       STICKY NAVBAR (shared, appears on all pages)
+       ============================================================ -->
+  <header class="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 md:px-16 lg:px-32 h-[72px] bg-background-light/90 backdrop-blur-sm border-b-2 border-text-main/10">
+
+    <!-- Logo -->
+    <a href="#hero" class="flex items-center gap-3 text-text-main">
+      <span class="text-primary w-6 h-6 flex items-center justify-center">
+        <svg fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M22.5 13.5c-1.5 0-2.8-.8-3.5-2-.7 1.2-2 2-3.5 2s-2.8-.8-3.5-2c-.7 1.2-2 2-3.5 2s-2.8-.8-3.5-2C4.3 12.7 3 13.5 1.5 13.5c-.8 0-1.5-.7-1.5-1.5s.7-1.5 1.5-1.5c2.5 0 4.5 2 4.5 4.5 0-2.5 2-4.5 4.5-4.5s4.5 2 4.5 4.5c0-2.5 2-4.5 4.5-4.5 2.5 0 4.5 2 4.5 4.5 0 .8-.7 1.5-1.5 1.5z"/>
+        </svg>
+      </span>
+      <span class="font-display text-xl font-bold tracking-widest uppercase">Muchhad</span>
+    </a>
+
+    <!-- Nav links -->
+    <nav class="hidden md:flex items-center gap-8">
+      <a href="#origin"      class="font-display text-sm font-semibold uppercase tracking-widest hover:text-primary transition-colors">Our Story</a>
+      <a href="#spark"       class="font-display text-sm font-semibold uppercase tracking-widest hover:text-primary transition-colors">The Spark</a>
+      <a href="#partnership" class="font-display text-sm font-semibold uppercase tracking-widest hover:text-primary transition-colors">The Team</a>
+      <a href="#product"     class="font-display text-sm font-semibold uppercase tracking-widest hover:text-primary transition-colors">Shop</a>
+    </nav>
+
+    <!-- CTA -->
+    <a href="#product" class="hidden md:flex items-center justify-center border-2 border-text-main h-10 px-6 bg-primary text-text-main font-display text-sm font-bold uppercase tracking-widest hover:bg-text-main hover:text-primary transition-all duration-300">
+      Grab a Pack
+    </a>
+
+    <!-- Mobile hamburger -->
+    <span class="md:hidden material-symbols-outlined text-3xl cursor-pointer">menu</span>
+  </header>
+
+
+  <!-- ============================================================
+       PAGE 1 — HERO
+       ============================================================ -->
+  <section id="hero" class="relative min-h-screen w-full flex flex-col items-center justify-center px-4 pt-[72px]">
+
+    <div class="flex flex-col items-center justify-center text-center max-w-4xl mx-auto space-y-8">
+
+      <!-- Big title -->
+      <!-- Logo -->
+     <img src="logo.png" alt="Muchhad Logo"
+     class="w-64 md:w-80 lg:w-96 drop-shadow-lg animate-fade-up mix-blend-multiply"/>
+
+      <p class="text-text-main font-body text-xl md:text-2xl font-normal max-w-2xl mx-auto leading-relaxed">
+        Healthy biscuits. Born in a home, baked for everyone.
+      </p>
+
+      <a href="#origin"
+         class="mt-8 flex cursor-pointer items-center justify-center border-2 border-text-main h-14 px-8 bg-transparent text-text-main font-display text-base font-bold uppercase tracking-widest hover:bg-text-main hover:text-background-light transition-all duration-300 relative group overflow-hidden">
+        <span class="relative z-10">Discover the Recipe</span>
+        <div class="absolute inset-0 bg-primary scale-x-0 origin-left transition-transform duration-300 ease-out group-hover:scale-x-100 -z-0"></div>
+      </a>
+    </div>
+
+    <!-- Scroll indicator -->
+    <div class="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
+      <span class="text-text-muted font-body text-sm uppercase tracking-widest">Scroll</span>
+      <span class="material-symbols-outlined text-text-main text-3xl animate-bounce-slow">south</span>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       PAGE 2 — THE ORIGIN
+       ============================================================ -->
+  <section id="origin" class="w-full py-24 px-6 md:px-12 lg:px-24 flex items-center min-h-screen border-t-2 border-text-main/20 relative overflow-hidden">
+
+    <!-- Decorative leaf -->
+    <div class="absolute top-10 right-10 opacity-20 text-accent rotate-12">
+      <svg fill="currentColor" height="64" viewBox="0 0 24 24" width="64">
+        <path d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22l.95-2.3C7.14 19.87 7.64 20 8 20c11 0 14-17 14-17-1 2-8 2.25-13 3.25C4 7.25 2 11.5 2 13.5S3.75 17.25 3.75 17.25C7 8 17 8 17 8Z"/>
+      </svg>
+    </div>
+
+    <div class="max-w-7xl mx-auto w-full flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
+
+      <!-- Image -->
+      <div class="w-full lg:w-1/2 flex justify-center animate-fade-up">
+        <div class="relative w-full max-w-md aspect-[4/5] bg-surface hard-border p-4 shadow-[8px_8px_0px_#3E2723]">
+          <img alt="Rustic kitchen setting"
+               class="w-full h-full object-cover sepia-img border border-text-muted"
+               src="https://lh3.googleusercontent.com/aida-public/AB6AXuB4Aa7VQSEGWlzvWqAVnyfON6ImJLIPdjZj3Tcmu82ciKEtSB_WsHtcIiLRajBXJvcay5gpRp6lNGZm9ysqqrqsn2A5CMFxo616NE4-taDr9ugEq-OFzu60QweTNRPNH7uE-BVSpXsCxHFZS0UaD9Ao0YzpPNmdYSD8SpktRQ9OjtklxN5PrPOwN5wVZPnDdSlhZc95vjSTGcNSGBue8xkbeRF3RGOsWFsZEoqhfl-gxiwh1fmn-i2WxGXmm8I0okXxzHj1Yk35npc"/>
+          <!-- Leaf motifs -->
+          <div class="absolute -top-6 -left-6 text-accent w-16 h-16 opacity-80">
+            <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C12 2 15 7 15 12C15 17 12 22 12 22C12 22 9 17 9 12C9 7 12 2 12 2Z"/></svg>
+          </div>
+          <div class="absolute -bottom-4 -right-4 text-accent w-12 h-12 opacity-80 rotate-45">
+            <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C12 2 15 7 15 12C15 17 12 22 12 22C12 22 9 17 9 12C9 7 12 2 12 2Z"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Text -->
+      <div class="w-full lg:w-1/2 flex flex-col gap-8">
+        <div class="flex flex-col gap-4">
+          <span class="font-display text-primary text-sm uppercase tracking-widest font-bold">The Origin</span>
+          <h2 class="font-display text-5xl md:text-[64px] leading-[1.1] text-text-main tracking-tight">
+            It Started With a Mother's Love.
+          </h2>
+          <div class="w-24 h-1 bg-text-main mt-2 relative">
+            <div class="absolute -bottom-1 left-0 w-full h-2 bg-accent opacity-50 -skew-x-12"></div>
+          </div>
+        </div>
+
+        <div class="font-body text-lg text-text-main leading-relaxed space-y-6">
+          <p>In a warm, bustling kitchen filled with the scent of toasted grains. A brother stood quietly, watching his sister bake biscuits—not for business, not for profit, but for her children. Every ingredient she used had a purpose. Whole wheat for nourishment, jaggery for natural sweetness, and not a trace of chemicals or preservatives. It wasn't just baking—it was care in its purest form.</p>
+          <p>That moment stayed with him.</p>
+          <p>He began to wonder—if a mother can go this far to ensure her children eat something real and healthy, why isn't the same care reflected in the biscuits we all consume every day? In a country where biscuits are a part of daily life—from morning chai to evening hunger pangs—why have we accepted products filled with artificial ingredients as the norm?</p>
+          <p>That question became a mission.</p>
+          <p class="italic text-text-muted">And that's how Muchhad Biscuits was born.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       PAGE 3 — THE SPARK
+       ============================================================ -->
+  <section id="spark" class="w-full py-24 px-4 flex items-center justify-center min-h-screen border-t-2 border-text-main/20 relative overflow-hidden">
+
+    <div class="w-full max-w-[800px] mx-auto relative z-10">
+      <!-- Surface card -->
+      <div class="bg-surface p-10 md:p-16 hard-border relative">
+        <!-- Corner accents -->
+        <div class="absolute top-2 left-2   w-3 h-3 border-t-2 border-l-2 border-text-main"></div>
+        <div class="absolute top-2 right-2  w-3 h-3 border-t-2 border-r-2 border-text-main"></div>
+        <div class="absolute bottom-2 left-2  w-3 h-3 border-b-2 border-l-2 border-text-main"></div>
+        <div class="absolute bottom-2 right-2 w-3 h-3 border-b-2 border-r-2 border-text-main"></div>
+
+        <div class="flex flex-col items-center text-center space-y-8">
+
+          <!-- Label -->
+          <span class="font-display text-primary text-sm uppercase tracking-widest font-bold">The Spark</span>
+
+          <!-- Quote -->
+          <blockquote class="space-y-4">
+            <p class="font-news text-3xl md:text-[36px] italic font-bold leading-tight tracking-tight text-text-main">
+              "Why should only babies get the good stuff?"
+            </p>
+            <footer class="font-display text-lg font-semibold text-text-muted">
+              — Vikas Bhaiya
+            </footer>
+          </blockquote>
+
+          <!-- Mustache separator -->
+          <div class="py-2 text-primary">
+            <svg fill="currentColor" height="24" viewBox="0 0 64 24" width="64">
+              <path d="M32 10.5C28.5 2 20 0 14 0C6 0 0 6.5 0 14.5C0 22.5 7.5 24 12 24C16.5 24 21 20.5 26 15C28.5 12 30.5 10.5 32 10.5C33.5 10.5 35.5 12 38 15C43 20.5 47.5 24 52 24C56.5 24 64 22.5 64 14.5C64 6.5 58 0 50 0C44 0 35.5 2 32 10.5Z"/>
+            </svg>
+          </div>
+
+          <p class="font-body text-lg md:text-xl leading-relaxed text-text-main max-w-2xl">
+            Vikas realized the biscuits were not only healthy but incredibly tasty. The spark was lit—why not share this wholesome goodness with everyone?
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       PAGE 4 — THE PARTNERSHIP
+       ============================================================ -->
+  <section id="partnership" class="relative w-full min-h-screen flex items-center justify-center py-20 px-6 lg:px-12 border-t-2 border-text-main/20 overflow-hidden">
+
+    <div class="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+
+      <!-- Left: Story -->
+      <div class="flex flex-col space-y-8 order-2 lg:order-1 relative z-10">
+        <div class="relative inline-block w-fit">
+          <h2 class="font-display text-5xl lg:text-6xl font-bold leading-tight text-text-main tracking-tight">
+            Two Minds,<br/>One Batch.
+          </h2>
+          <!-- Rough underline -->
+          <svg class="absolute -bottom-4 left-0 w-full h-4 text-primary" fill="none" viewBox="0 0 200 12">
+            <path d="M2 9.5C45.5 -1.5 120 -2.5 198 8.5" stroke="currentColor" stroke-linecap="round" stroke-width="3"/>
+          </svg>
+        </div>
+
+        <div class="space-y-6 font-body text-lg lg:text-xl text-text-main leading-relaxed max-w-lg mt-4">
+          <p>Vikas knew he had stumbled onto something special in his sister's kitchen. But turning a homemade, health-first recipe into a biscuit for everyone required more than just passion—it required scale without losing the soul.</p>
+          <p>That's when he teamed up with his senior, Vipul Arya. With Vipul's operational mind and Vikas's uncompromising vision for quality, they set out to build a bakery that felt like a home kitchen.</p>
+        </div>
+      </div>
+
+      <!-- Right: Vintage frame -->
+      <div class="relative order-1 lg:order-2 flex justify-center lg:justify-end px-4 sm:px-8 lg:px-0">
+        <div class="relative w-full max-w-[500px] aspect-[4/5] lg:aspect-square xl:aspect-[4/5] group">
+          <!-- Offset sage block -->
+          <div class="absolute inset-0 bg-accent translate-x-4 translate-y-4 lg:translate-x-6 lg:translate-y-6 hard-border transition-transform duration-500 group-hover:translate-x-3 group-hover:translate-y-3"></div>
+          <!-- Image frame -->
+          <div class="relative h-full w-full bg-surface hard-border overflow-hidden shadow-[4px_4px_0px_rgba(62,39,35,0.1)] transition-transform duration-500 group-hover:-translate-x-1 group-hover:-translate-y-1 p-3">
+            <div class="absolute inset-3 border border-text-main/30 pointer-events-none z-10"></div>
+            <div class="w-full h-full overflow-hidden">
+              <img alt="Two men reviewing plans in a workshop setting"
+                   class="object-cover w-full h-full opacity-90 sepia-img mix-blend-multiply"
+                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5SNY3ZkQ0oieUwULLvqQG8KryFjxmk4EG_VW4lcqufJfwhJuKJLqn89eMqutRDQcXQiVJxl_mo_0Eapw-rLABT71JlFxYGKibxu9cH9rTYtJHYqH7G6sBGh5B0UIHPrBxsPQfsttcp3Gy3MufaeDLn6F9K7ekWddqfAbd_zKtg0FkjaeQEZ3j3HUlPyKvWvngpgH5EoR3koxnyYBFqIlNctIoAK9SwO68kZNH3j90pqKKF8bNKIiCHy4egkjsjbFGvmnSo4CTy7o"/>
+            </div>
+          </div>
+          <!-- Corner pins -->
+          <div class="absolute -top-2 -left-2   w-4 h-4 bg-text-main rounded-full z-20"></div>
+          <div class="absolute -top-2 -right-2  w-4 h-4 bg-text-main rounded-full z-20"></div>
+          <div class="absolute -bottom-2 -left-2  w-4 h-4 bg-text-main rounded-full z-20"></div>
+          <div class="absolute -bottom-2 -right-2 w-4 h-4 bg-text-main rounded-full z-20"></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       PAGE 5 — THE FACES BEHIND THE BATCH (Team)
+       ============================================================ -->
+  <section id="team" class="w-full min-h-screen py-24 px-4 sm:px-6 lg:px-8 border-t-2 border-text-main/20">
+
+    <!-- Header -->
+    <div class="text-center mb-16 max-w-7xl mx-auto">
+      <h2 class="font-display text-5xl md:text-6xl font-bold text-text-main mb-4 tracking-tight">
+        The Faces Behind the Batch
+      </h2>
+      <div class="flex justify-center items-center gap-4 mt-6">
+        <div class="h-[2px] w-16 bg-text-main"></div>
+        <span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings:'FILL' 1;">local_cafe</span>
+        <div class="h-[2px] w-16 bg-text-main"></div>
+      </div>
+      <p class="mt-6 font-body text-xl text-text-muted max-w-2xl mx-auto italic">
+        Real people, real ingredients, and a whole lot of love. Meet the family bringing homemade goodness to everyone.
+      </p>
+    </div>
+
+    <!-- Grid -->
+    <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
+
+      <!-- The Sister -->
+      <article class="team-card bg-background-light flex flex-col group" tabindex="0">
+        <div class="aspect-[4/5] relative overflow-hidden bg-surface border-b-2 border-text-main">
+          <img alt="Portrait of a smiling woman in a rustic kitchen"
+               class="w-full h-full object-cover sepia-img mix-blend-multiply"
+               src="https://lh3.googleusercontent.com/aida-public/AB6AXuBRkPg73eaE4FPxHP-4IbhDlGMz9FGEmT4v6OI6rlfs2kkR-rjISXU2CevuMJBNFujCfWKB93AClrrKDwDBaoDfRQQ_b98szbLz_S6SxsmMzA7ct8ipJal3yQNQ5CR78SqZaz7eQOBsai3u5JlPITG6mcXb23WG_UUQktrjbjFpeDHD-YOOEgB6u3E4cYO5galP3xoOJj-8v2OXReGL-M4f_kcuX37xWZ6Yk9f2hvEzdzLDlMAWMg1omYYT2cdsFXXNHrJ9KnlZkQU"/>
+        </div>
+        <div class="p-6 text-center flex-grow flex flex-col justify-center">
+          <h3 class="font-display text-2xl font-bold text-text-main uppercase tracking-wider mb-2">The Sister</h3>
+          <p class="font-body text-base text-text-muted italic font-medium"> The spark &amp; Love</p>
+          <div class="mt-4 w-8 h-8 mx-auto bg-accent/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+            <span class="material-symbols-outlined text-text-main text-sm">favorite</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Vikas -->
+      <article class="team-card bg-background-light flex flex-col group" tabindex="0">
+        <div class="aspect-[4/5] relative overflow-hidden bg-surface border-b-2 border-text-main">
+          <img alt="Portrait of Vikas Bhaiya"
+               class="w-full h-full object-cover sepia-img mix-blend-multiply"
+               src="vikas.jpg"/>
+        </div>
+        <div class="p-6 text-center flex-grow flex flex-col justify-center">
+          <h3 class="font-display text-2xl font-bold text-text-main uppercase tracking-wider mb-2">Vikas Bhaiya</h3>
+          <p class="font-body text-base text-text-muted italic font-medium">The Founder &amp; Visionary</p>
+          <div class="mt-4 w-8 h-8 mx-auto bg-accent/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+            <span class="material-symbols-outlined text-text-main text-sm">lightbulb</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Vipul -->
+      <article class="team-card bg-background-light flex flex-col group" tabindex="0">
+        <div class="aspect-[4/5] relative overflow-hidden bg-surface border-b-2 border-text-main">
+          <img alt="Portrait of Vipul Arya"
+               class="w-full h-full object-cover sepia-img mix-blend-multiply"
+               src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2B7VYJYQ8SKnANAAkejrSJzwe60iR1EbtKap14z_rjCFUstfy63uQVyPIalQkMmccJROAx6vCdNVy3hV667pmVguDh2lwloLXogqKMYDVoqNUOZsyRLh5cDhPb-2eGyoCqwzx5vy1KQSiWmyjEnNWOwoevIa9C3ZOqyUT2EoyC_XLsog35aPKG7vgEIqk1MTMHGk5GuRI5-JixoRabM_wiwP-q_BwHIh-Yi8tAZQWxNHL6GqXCYSfvEuD7LEn4HwLGzpPhIYUUCY"/>
+        </div>
+        <div class="p-6 text-center flex-grow flex flex-col justify-center">
+          <h3 class="font-display text-2xl font-bold text-text-main uppercase tracking-wider mb-2">Vipul Arya</h3>
+          <p class="font-body text-base text-text-muted italic font-medium">Backend &amp; Scaler</p>
+          <div class="mt-4 w-8 h-8 mx-auto bg-accent/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+            <span class="material-symbols-outlined text-text-main text-sm">trending_up</span>
+          </div>
+        </div>
+      </article>
+
+    </div>
+
+    <!-- Dashed divider -->
+    <div class="mt-24 flex justify-center">
+      <svg fill="none" height="20" viewBox="0 0 120 20" width="120">
+        <path d="M0 10 Q 30 0, 60 10 T 120 10" stroke="#3E2723" stroke-linecap="round" stroke-width="2" style="stroke-dasharray:4 4;"/>
+      </svg>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       PAGE 6 — TASTE THE STORY (Products)
+       ============================================================ -->
+  <section id="product" class="w-full min-h-screen py-24 px-6 border-t-2 border-text-main/20 relative overflow-hidden flex flex-col items-center">
+
+    <!-- Decorative icons -->
+    <div class="absolute top-10 left-10 text-accent opacity-50 rotate-12">
+      <span class="material-symbols-outlined text-6xl">energy_savings_leaf</span>
+    </div>
+    <div class="absolute bottom-20 right-10 text-accent opacity-50 -rotate-12">
+      <span class="material-symbols-outlined text-5xl">eco</span>
+    </div>
+
+    <div class="max-w-6xl w-full flex flex-col items-center text-center z-10">
+
+      <h2 class="font-display text-5xl md:text-7xl font-bold mb-6 tracking-tight">
+        Taste the <span class="rough-underline text-primary">Story</span>
+      </h2>
+      <p class="font-body text-xl md:text-2xl mb-16 max-w-2xl leading-relaxed">
+        From a sister's kitchen to your hands. The authentic Muchhad biscuit, baked with love and nothing else.
+      </p>
+
+      <!-- Product grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16 w-full">
+
+        <!-- Product 1 -->
+        <div class="group flex flex-col tilt-1">
+          <div class="relative bg-background-light hard-border p-4 transition-transform group-hover:scale-[1.02] duration-300">
+            <div class="aspect-square bg-surface hard-border mb-4 overflow-hidden">
+              <img alt="Muchhad Heritage Box" class="w-full h-full object-cover"
+                   src="1.jpg"/>
+            </div>
+            <div class="text-left">
+              <h3 class="font-display text-xl font-bold uppercase tracking-tight">The Heritage Box</h3>
+              <p class="font-body text-sm opacity-75 italic mb-2">150g Roasted Almond</p>
+              <span class="font-display text-lg font-bold">₹99.00</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product 2 -->
+        <div class="group flex flex-col tilt-2 mt-4 lg:mt-8">
+          <div class="relative bg-background-light hard-border p-4 transition-transform group-hover:scale-[1.02] duration-300">
+            <div class="aspect-square bg-surface hard-border mb-4 overflow-hidden">
+              <img alt="Muchhad Sample Pouch" class="w-full h-full object-cover"
+                   src="4.jpg"/>
+            </div>
+            <div class="text-left">
+              <h3 class="font-display text-xl font-bold uppercase tracking-tight">The Sample Pouch</h3>
+              <p class="font-body text-sm opacity-75 italic mb-2">Travel-friendly packets</p>
+              <span class="font-display text-lg font-bold">Sample Pack</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product 3 -->
+        <div class="group flex flex-col tilt-3">
+          <div class="relative bg-background-light hard-border p-4 transition-transform group-hover:scale-[1.02] duration-300">
+            <div class="aspect-square bg-surface hard-border mb-4 overflow-hidden">
+              <img alt="Muchhad Glass Jar" class="w-full h-full object-cover"
+                   src="2.jpg"/>
+            </div>
+            <div class="text-left">
+              <h3 class="font-display text-xl font-bold uppercase tracking-tight">The Glass Jar</h3>
+              <p class="font-body text-sm opacity-75 italic mb-2">Airtight for freshness</p>
+              <span class="font-display text-lg font-bold">₹129.00</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product 4 -->
+        <div class="group flex flex-col tilt-4 mt-4 lg:mt-8">
+          <div class="relative bg-background-light hard-border p-4 transition-transform group-hover:scale-[1.02] duration-300">
+            <div class="aspect-square bg-surface hard-border mb-4 overflow-hidden">
+              <img alt="Muchhad Variety Set" class="w-full h-full object-cover"
+                   src="3.jpg"/>
+            </div>
+            <div class="text-left">
+              <h3 class="font-display text-xl font-bold uppercase tracking-tight">The Variety Set</h3>
+              <p class="font-body text-sm opacity-75 italic mb-2">Almond, Pista &amp; More</p>
+              <span class="font-display text-lg font-bold">₹289.00</span>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /grid -->
+
+      <!-- CTA -->
+      <button class="h-16 px-12 bg-primary text-text-main font-display text-xl font-bold uppercase tracking-[0.15em] hard-border hover:bg-[#e6c13d] transition-colors shadow-[4px_4px_0px_0px_#3E2723] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#3E2723] active:translate-y-[4px] active:shadow-none flex items-center gap-3">
+        Grab your Pack
+        <span class="material-symbols-outlined">shopping_basket</span>
+      </button>
+
+      <div class="mt-8 flex items-center gap-2 font-body text-sm font-medium opacity-70">
+        <span class="material-symbols-outlined text-base">local_shipping</span>
+        Free shipping on orders over ₹499
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       FOOTER from here
+       ============================================================ -->
+  <footer class="bg-background-dark text-background-light w-full py-12 px-6 border-t-4 border-primary">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+      <div class="flex flex-col items-center md:items-start">
+        <h4 class="font-display text-3xl font-bold tracking-tighter mb-2 text-primary">Muchhad.</h4>
+        <p class="font-body text-sm opacity-80">Born in a home, baked for everyone.</p>
+      </div>
+      <div class="flex gap-6 font-body text-sm">
+        <a href="#origin"  class="hover:text-primary transition-colors underline decoration-primary decoration-2 underline-offset-4">Our Story</a>
+        <a href="#"        class="hover:text-primary transition-colors underline decoration-primary decoration-2 underline-offset-4">Contact</a>
+        <a href="#"        class="hover:text-primary transition-colors underline decoration-primary decoration-2 underline-offset-4">Wholesale</a>
+      </div>
+      <div class="font-body text-sm opacity-60 flex items-center gap-1">
+        © 2024 Muchhad Biscuits.
+        <span class="material-symbols-outlined text-xs" style="font-variation-settings:'FILL' 1;">favorite</span>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
