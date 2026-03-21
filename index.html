@@ -364,8 +364,8 @@
     /* ======= Ring layout (unchanged) ======= */
     .ring-container {
       position: relative;
-      width: 700px;
-      height: 700px;
+      width: 800px;
+      height: 800px;
       margin: 0 auto;
     }
     .ring-container::before {
@@ -673,7 +673,7 @@
             <p class="font-news text-3xl md:text-[36px] italic font-bold leading-tight tracking-tight text-text-main">
               "Why should only babies get the good stuff?"
             </p>
-            <footer class="font-display text-lg font-semibold text-text-muted">— Vikas Bhaiya</footer>
+            <footer class="font-display text-lg font-semibold text-text-muted">— Vikash Bhaiya</footer>
           </blockquote>
           <div class="py-2 text-primary">
             <svg fill="currentColor" height="24" viewBox="0 0 64 24" width="64">
@@ -748,48 +748,74 @@
     <div class="ring-container">
       <div class="ring-center"><img src="logo.png" alt="Muchhad"/></div>
 
+      <!-- 7 members · 360°÷7 ≈ 51.43° apart · R = 38%
+           Angles  : 0° | 51.4° | 102.9° | 154.3° | 205.7° | 257.1° | 308.6°
+           Formula : left = 50 + 38·sin(θ)   top = 50 − 38·cos(θ)            -->
+
+      <!-- 0° — top centre -->
       <div class="ring-member" style="top:12%; left:50%;">
         <div class="ring-photo"><img alt="The Sister" src="didi.jpeg"/></div>
         <div class="ring-label">
-          <p class="font-display text-xs font-bold text-text-main uppercase tracking-wider">The Sister</p>
+          <p class="font-display text-xs font-bold text-text-main uppercase tracking-wider">Laxmi Singh</p>
           <p class="font-body text-[11px] text-text-muted italic">Spark &amp; Love</p>
         </div>
       </div>
-      <div class="ring-member" style="top:25%; left:83%;">
+
+      <!-- 51.4° — upper right -->
+      <div class="ring-member" style="top:26%; left:80%;">
         <div class="ring-photo"><img alt="Vikas Bhaiya" src="vikas.jpg"/></div>
         <div class="ring-label">
-          <p class="font-display text-xs font-bold text-text-main uppercase tracking-wider">Vikas</p>
+          <p class="font-display text-xs font-bold text-text-main uppercase tracking-wider">Vikash Singh</p>
           <p class="font-body text-[11px] text-text-muted italic">Founder</p>
         </div>
       </div>
-      <div class="ring-member" style="top:75%; left:83%;">
+
+      <!-- 102.9° — right -->
+      <div class="ring-member" style="top:58%; left:87%;">
         <div class="ring-photo"><img alt="Vipul Arya" src="vipul.jpeg"/></div>
         <div class="ring-label">
-          <p class="font-display text-xs font-bold text-text-main uppercase tracking-wider">Vipul</p>
-          <p class="font-body text-[11px] text-text-muted italic">Co-founder</p>
+          <p class="font-display text-xs font-bold text-text-main uppercase tracking-wider">Vipul Kumar Arya</p>
+          <p class="font-body text-[11px] text-text-muted italic">Co-founder &amp; Advisor </p>
         </div>
       </div>
-      <div class="ring-member" style="top:88%; left:50%;">
+
+      <!-- 154.3° — lower right -->
+      <div class="ring-member" style="top:84%; left:67%;">
         <div class="ring-photo"><img alt="Deepanshu" src="deepanshu.jpg"/></div>
         <div class="ring-label">
           <p class="font-display text-xs font-bold text-text-main uppercase tracking-wider">Deepanshu</p>
-          <p class="font-body text-[11px] text-text-muted italic">Manager</p>
+          <p class="font-body text-[11px] text-text-muted italic">CTO</p>
         </div>
       </div>
-      <div class="ring-member" style="top:75%; left:17%;">
+
+      <!-- 205.7° — lower left -->
+      <div class="ring-member" style="top:84%; left:34%;">
         <div class="ring-photo"><img alt="Krishna" src="krishna.jpeg"/></div>
         <div class="ring-label">
-          <p class="font-display text-xs font-bold text-text-main uppercase tracking-wider">Krishna</p>
-          <p class="font-body text-[11px] text-text-muted italic">Promotion &amp; Sales</p>
+          <p class="font-display text-xs font-bold text-text-main uppercase tracking-wider">Neeraj Tiwari</p>
+          <p class="font-body text-[11px] text-text-muted italic">Accounts &amp; Finance Manager</p>
         </div>
       </div>
-      <div class="ring-member" style="top:25%; left:17%;">
+
+      <!-- 257.1° — left -->
+      <div class="ring-member" style="top:58%; left:13%;">
         <div class="ring-photo"><img alt="Annu" src="annu.jpeg"/></div>
         <div class="ring-label">
-          <p class="font-display text-xs font-bold text-text-main uppercase tracking-wider">Annu</p>
-          <p class="font-body text-[11px] text-text-muted italic">Marketing &amp; Sales</p>
+          <p class="font-display text-xs font-bold text-text-main uppercase tracking-wider">Annu Singh</p>
+          <p class="font-body text-[11px] text-text-muted italic">Resource Manager</p>
         </div>
       </div>
+
+      <!-- 308.6° — upper left  ← NEW 7th member -->
+      <div class="ring-member" style="top:26%; left:20%;">
+        <div class="ring-photo"><img alt="New Member" src="gautam.jpeg"
+             onerror="this.style.display='none'; this.parentElement.style.background='#D6C5B3'; this.parentElement.innerHTML+='<span style=\'font-family:Fraunces,serif;font-size:32px;font-weight:700;color:#795548;\'>?</span>'"/></div>
+        <div class="ring-label">
+          <p class="font-display text-xs font-bold text-text-main uppercase tracking-wider">Gautam Singh</p>
+          <p class="font-body text-[11px] text-text-muted italic">Co-Founder</p>
+        </div>
+      </div>
+
     </div>
 
     <div class="mt-24 flex justify-center">
@@ -1245,7 +1271,8 @@
     (function() {
       const container = document.querySelector('.ring-container');
       const members   = document.querySelectorAll('.ring-member');
-      const baseAngles = [0, 60, 120, 180, 240, 300];
+      // 7 members · 360° ÷ 7 ≈ 51.43° apart
+      const baseAngles = [0, 51.43, 102.86, 154.29, 205.71, 257.14, 308.57];
       const R = 38;
       let offset  = 0;
       let paused  = false;
