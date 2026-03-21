@@ -9,8 +9,6 @@
   <link href="https://fonts.googleapis.com" rel="preconnect"/>
   <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Lora:ital,wght@0,400..700;1,400..700&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap" rel="stylesheet"/>
-
-  <!-- Material Symbols -->
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 
   <!-- Tailwind CSS -->
@@ -46,389 +44,299 @@
   </script>
 
   <style>
-    /* ---------- Global ---------- */
+    /* ── Global ── */
     body {
       background-color: #EAE0D5;
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
     }
-
-    /* Paper overlay */
     .paper-overlay {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 999;
-      opacity: 0.10;
-      mix-blend-mode: multiply;
+      position: fixed; inset: 0; pointer-events: none; z-index: 999;
+      opacity: 0.10; mix-blend-mode: multiply;
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
     }
 
-    /* ---------- Scroll bounce ---------- */
     @keyframes bounce-slow {
       0%, 100% { transform: translateY(-25%); animation-timing-function: cubic-bezier(0.8,0,1,1); }
       50%       { transform: translateY(0);   animation-timing-function: cubic-bezier(0,0,0.2,1); }
     }
     .animate-bounce-slow { animation: bounce-slow 2s infinite; }
 
-    /* ---------- Fade-up ---------- */
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(24px); }
       to   { opacity: 1; transform: translateY(0); }
     }
     .animate-fade-up { animation: fadeUp 1s ease-out forwards; }
 
-    /* ---------- Rough underline ---------- */
     .rough-underline { position: relative; display: inline-block; }
     .rough-underline::after {
-      content: '';
-      position: absolute;
-      bottom: -4px; left: 0;
-      width: 100%; height: 3px;
-      background-color: #3E2723;
+      content: ''; position: absolute; bottom: -4px; left: 0;
+      width: 100%; height: 3px; background-color: #3E2723;
       border-radius: 50% 50% 50% 50% / 10% 10% 90% 90%;
       transform: rotate(-1deg);
     }
 
-    /* ---------- Product card tilts ---------- */
     .tilt-1 { transform: rotate(-1deg); }
     .tilt-2 { transform: rotate(1.5deg); }
     .tilt-3 { transform: rotate(-0.5deg); }
     .tilt-4 { transform: rotate(1deg); }
 
-    /* ---------- Team card ---------- */
-    .team-card {
-      border: 2px solid #3E2723;
-      transition: all 0.3s ease;
-    }
-    .team-card:hover {
-      background-color: #e0b629;
-      transform: translateY(-4px);
-      box-shadow: 4px 4px 0px #3E2723;
-    }
-    .team-card:hover img {
-      filter: sepia(0.8) hue-rotate(330deg) saturate(1.5) contrast(1.2);
-    }
-    .sepia-img {
-      filter: sepia(0.6) contrast(1.1);
-      transition: filter 0.3s ease;
-    }
-
-    /* ---------- Hard border util ---------- */
+    .sepia-img { filter: sepia(0.6) contrast(1.1); transition: filter 0.3s ease; }
     .hard-border { border: 2px solid #3E2723; }
-
-    /* ---------- Smooth scroll ---------- */
     html { scroll-behavior: smooth; }
 
-    /* ==========================================
-       CART SIDEBAR
-    ========================================== */
+    /* ── Cart Sidebar ── */
     #cart-sidebar {
-      position: fixed;
-      top: 0; right: 0;
-      width: 420px;
-      max-width: 100vw;
-      height: 100vh;
-      background: #EAE0D5;
-      border-left: 3px solid #3E2723;
-      z-index: 1100;
-      transform: translateX(100%);
+      position: fixed; top: 0; right: 0;
+      width: 420px; max-width: 100vw; height: 100vh;
+      background: #EAE0D5; border-left: 3px solid #3E2723;
+      z-index: 1100; transform: translateX(100%);
       transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-      display: flex;
-      flex-direction: column;
+      display: flex; flex-direction: column;
       box-shadow: -8px 0 32px rgba(62,39,35,0.18);
     }
     #cart-sidebar.open { transform: translateX(0); }
-
     #cart-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(62,39,35,0.45);
-      z-index: 1099;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.35s ease;
-      backdrop-filter: blur(2px);
+      position: fixed; inset: 0; background: rgba(62,39,35,0.45);
+      z-index: 1099; opacity: 0; pointer-events: none;
+      transition: opacity 0.35s ease; backdrop-filter: blur(2px);
     }
     #cart-backdrop.open { opacity: 1; pointer-events: all; }
-
     .cart-header {
-      padding: 24px 28px 20px;
-      border-bottom: 2px solid #3E2723;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-shrink: 0;
-      background: #D6C5B3;
+      padding: 24px 28px 20px; border-bottom: 2px solid #3E2723;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-shrink: 0; background: #D6C5B3;
     }
-
-    .cart-body {
-      flex: 1;
-      overflow-y: auto;
-      padding: 20px 28px;
-    }
+    .cart-body { flex: 1; overflow-y: auto; padding: 20px 28px; }
     .cart-body::-webkit-scrollbar { width: 6px; }
     .cart-body::-webkit-scrollbar-track { background: #D6C5B3; }
     .cart-body::-webkit-scrollbar-thumb { background: #3E2723; }
-
     .cart-item {
-      display: flex;
-      gap: 14px;
-      align-items: flex-start;
-      padding: 16px 0;
-      border-bottom: 1px dashed #795548;
+      display: flex; gap: 14px; align-items: flex-start;
+      padding: 16px 0; border-bottom: 1px dashed #795548;
       animation: fadeUp 0.3s ease-out forwards;
     }
-    .cart-item-img {
-      width: 70px; height: 70px;
-      flex-shrink: 0;
-      border: 2px solid #3E2723;
-      object-fit: cover;
-    }
+    .cart-item-img { width: 70px; height: 70px; flex-shrink: 0; border: 2px solid #3E2723; object-fit: cover; }
     .cart-item-meta { flex: 1; min-width: 0; }
     .qty-btn {
-      width: 28px; height: 28px;
-      border: 1.5px solid #3E2723;
-      background: transparent;
-      font-family: 'Fraunces', serif;
-      font-size: 16px;
-      font-weight: 700;
-      cursor: pointer;
+      width: 28px; height: 28px; border: 1.5px solid #3E2723;
+      background: transparent; font-family: 'Fraunces', serif;
+      font-size: 16px; font-weight: 700; cursor: pointer;
       display: flex; align-items: center; justify-content: center;
       transition: background 0.15s, color 0.15s;
     }
     .qty-btn:hover { background: #3E2723; color: #EAE0D5; }
     .cart-qty-display {
       width: 32px; height: 28px;
-      border-top: 1.5px solid #3E2723;
-      border-bottom: 1.5px solid #3E2723;
+      border-top: 1.5px solid #3E2723; border-bottom: 1.5px solid #3E2723;
       display: flex; align-items: center; justify-content: center;
-      font-family: 'Fraunces', serif;
-      font-size: 14px;
-      font-weight: 700;
+      font-family: 'Fraunces', serif; font-size: 14px; font-weight: 700;
     }
-
     .cart-footer {
-      padding: 20px 28px 28px;
-      border-top: 2px solid #3E2723;
-      flex-shrink: 0;
-      background: #D6C5B3;
+      padding: 20px 28px 28px; border-top: 2px solid #3E2723;
+      flex-shrink: 0; background: #D6C5B3;
     }
-
     .empty-cart-state {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100%;
-      gap: 16px;
-      padding: 40px 20px;
-      text-align: center;
-      color: #795548;
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; height: 100%;
+      gap: 16px; padding: 40px 20px; text-align: center; color: #795548;
     }
-
-    /* Cart badge */
     #cart-badge {
-      position: absolute;
-      top: -7px; right: -8px;
-      width: 20px; height: 20px;
-      background: #D4AF37;
-      border: 2px solid #3E2723;
-      border-radius: 9999px;
-      font-family: 'Fraunces', serif;
-      font-size: 11px;
-      font-weight: 800;
-      color: #3E2723;
+      position: absolute; top: -7px; right: -8px;
+      width: 20px; height: 20px; background: #D4AF37;
+      border: 2px solid #3E2723; border-radius: 9999px;
+      font-family: 'Fraunces', serif; font-size: 11px; font-weight: 800; color: #3E2723;
       display: flex; align-items: center; justify-content: center;
-      transform: scale(0);
-      transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1);
+      transform: scale(0); transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1);
     }
     #cart-badge.visible { transform: scale(1); }
 
-    /* ==========================================
-       PRODUCT MODAL
-    ========================================== */
+    /* ── Product Modal ── */
     #product-modal {
-      position: fixed;
-      inset: 0;
-      z-index: 1200;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      opacity: 0;
-      pointer-events: none;
+      position: fixed; inset: 0; z-index: 1200;
+      display: flex; align-items: center; justify-content: center;
+      padding: 20px; opacity: 0; pointer-events: none;
       transition: opacity 0.35s ease;
     }
-    #product-modal.open {
-      opacity: 1;
-      pointer-events: all;
-    }
-    #product-modal-backdrop {
-      position: absolute;
-      inset: 0;
-      background: rgba(62,39,35,0.6);
-      backdrop-filter: blur(4px);
-    }
+    #product-modal.open { opacity: 1; pointer-events: all; }
+    #product-modal-backdrop { position: absolute; inset: 0; background: rgba(62,39,35,0.6); backdrop-filter: blur(4px); }
     #product-modal-box {
-      position: relative;
-      z-index: 1;
-      width: 100%;
-      max-width: 860px;
-      max-height: 90vh;
-      overflow-y: auto;
-      background: #EAE0D5;
-      border: 3px solid #3E2723;
-      box-shadow: 10px 10px 0px #3E2723;
+      position: relative; z-index: 1; width: 100%; max-width: 860px;
+      max-height: 90vh; overflow-y: auto; background: #EAE0D5;
+      border: 3px solid #3E2723; box-shadow: 10px 10px 0px #3E2723;
       transform: translateY(32px) scale(0.97);
       transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-      display: flex;
-      flex-direction: column;
+      display: flex; flex-direction: column;
     }
-    #product-modal.open #product-modal-box {
-      transform: translateY(0) scale(1);
-    }
+    #product-modal.open #product-modal-box { transform: translateY(0) scale(1); }
     #product-modal-box::-webkit-scrollbar { width: 6px; }
     #product-modal-box::-webkit-scrollbar-track { background: #D6C5B3; }
     #product-modal-box::-webkit-scrollbar-thumb { background: #3E2723; }
+    .modal-inner { display: grid; grid-template-columns: 1fr 1fr; min-height: 480px; }
+    @media (max-width: 640px) { .modal-inner { grid-template-columns: 1fr; } }
 
-    .modal-inner {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      min-height: 480px;
-    }
-    @media (max-width: 640px) {
-      .modal-inner { grid-template-columns: 1fr; }
-    }
-
-    /* Add-to-cart button on product card */
+    /* ── Add-to-Cart Button ── */
     .atc-btn {
-      width: 100%;
-      margin-top: 12px;
-      height: 42px;
-      background: #3E2723;
-      color: #EAE0D5;
-      font-family: 'Fraunces', serif;
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      border: 2px solid #3E2723;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
+      width: 100%; margin-top: 12px; height: 42px;
+      background: #3E2723; color: #EAE0D5;
+      font-family: 'Fraunces', serif; font-size: 13px; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      border: 2px solid #3E2723; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
       transition: background 0.2s, color 0.2s, transform 0.15s, box-shadow 0.15s;
       box-shadow: 3px 3px 0px #795548;
     }
-    .atc-btn:hover {
-      background: #D4AF37;
-      color: #3E2723;
-      box-shadow: 1px 1px 0px #795548;
-      transform: translate(2px, 2px);
-    }
-    .atc-btn.added {
-      background: #8FBC8F;
-      border-color: #3E2723;
-      pointer-events: none;
-    }
-
-    /* Product card cursor */
+    .atc-btn:hover { background: #D4AF37; color: #3E2723; box-shadow: 1px 1px 0px #795548; transform: translate(2px, 2px); }
+    .atc-btn.added { background: #8FBC8F; border-color: #3E2723; pointer-events: none; }
     .product-card-wrap { cursor: pointer; }
 
-    /* Checkout success toast */
+    /* ── Checkout Toast ── */
     #checkout-toast {
-      position: fixed;
-      bottom: 32px;
-      left: 50%;
+      position: fixed; bottom: 32px; left: 50%;
       transform: translateX(-50%) translateY(80px);
-      z-index: 2000;
-      background: #3E2723;
-      color: #EAE0D5;
-      font-family: 'Fraunces', serif;
-      font-size: 15px;
-      font-weight: 600;
-      letter-spacing: 0.05em;
-      padding: 16px 36px;
-      border: 2px solid #D4AF37;
-      box-shadow: 4px 4px 0 #D4AF37;
+      z-index: 2000; background: #3E2723; color: #EAE0D5;
+      font-family: 'Fraunces', serif; font-size: 15px; font-weight: 600;
+      letter-spacing: 0.05em; padding: 16px 36px;
+      border: 2px solid #D4AF37; box-shadow: 4px 4px 0 #D4AF37;
       transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
-      opacity: 0;
-      white-space: nowrap;
+      opacity: 0; white-space: nowrap;
     }
-    #checkout-toast.show {
-      transform: translateX(-50%) translateY(0);
-      opacity: 1;
+    #checkout-toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+    /* ── Pre-order Modal ── */
+    #preorder-modal {
+      position: fixed; inset: 0; z-index: 1300;
+      display: flex; align-items: center; justify-content: center;
+      padding: 16px; opacity: 0; pointer-events: none;
+      transition: opacity 0.35s ease;
+    }
+    #preorder-modal.open { opacity: 1; pointer-events: all; }
+    #preorder-modal-backdrop {
+      position: absolute; inset: 0;
+      background: rgba(62,39,35,0.75); backdrop-filter: blur(6px);
+    }
+    #preorder-modal-box {
+      position: relative; z-index: 1; width: 100%; max-width: 920px;
+      max-height: 92vh; overflow-y: auto; background: #EAE0D5;
+      border: 3px solid #3E2723; box-shadow: 12px 12px 0px #3E2723;
+      transform: translateY(40px) scale(0.96);
+      transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    #preorder-modal.open #preorder-modal-box { transform: translateY(0) scale(1); }
+    #preorder-modal-box::-webkit-scrollbar { width: 6px; }
+    #preorder-modal-box::-webkit-scrollbar-track { background: #D6C5B3; }
+    #preorder-modal-box::-webkit-scrollbar-thumb { background: #3E2723; }
+
+    .preorder-grid { display: grid; grid-template-columns: 1fr 1.1fr; min-height: 540px; }
+    @media (max-width: 700px) { .preorder-grid { grid-template-columns: 1fr; } }
+
+    .preorder-summary {
+      background: #D6C5B3; border-right: 2px solid #3E2723;
+      padding: 36px 32px; display: flex; flex-direction: column; gap: 20px;
+    }
+    .preorder-summary-item {
+      display: flex; gap: 12px; align-items: flex-start;
+      padding-bottom: 16px; border-bottom: 1px dashed #795548;
+    }
+    .preorder-summary-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .preorder-summary-img { width: 56px; height: 56px; border: 2px solid #3E2723; object-fit: cover; flex-shrink: 0; }
+
+    .preorder-form-panel { padding: 36px 32px; display: flex; flex-direction: column; gap: 22px; }
+
+    /* Form fields */
+    .field-wrap { display: flex; flex-direction: column; gap: 6px; }
+    .field-label {
+      font-family: 'Fraunces', serif; font-size: 11px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.1em; color: #795548;
+    }
+    .field-input {
+      width: 100%; height: 46px; padding: 0 14px;
+      background: #EAE0D5; border: 2px solid #3E2723;
+      font-family: 'Lora', serif; font-size: 14px; color: #3E2723;
+      outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .field-input:focus { border-color: #D4AF37; box-shadow: 3px 3px 0 #D4AF37; }
+    .field-input.error { border-color: #c0392b; box-shadow: 2px 2px 0 #c0392b; }
+    .field-input::placeholder { color: #b0a090; font-style: italic; }
+    textarea.field-input { height: 80px; padding: 12px 14px; resize: none; }
+    .field-error {
+      font-family: 'Lora', serif; font-size: 11px; color: #c0392b;
+      font-style: italic; display: none;
+    }
+    .field-error.show { display: block; }
+
+    .preorder-submit-btn {
+      width: 100%; height: 52px; background: #D4AF37; color: #3E2723;
+      font-family: 'Fraunces', serif; font-size: 14px; font-weight: 800;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      border: 2px solid #3E2723; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      box-shadow: 4px 4px 0 #3E2723;
+      transition: background 0.2s, color 0.2s, transform 0.15s, box-shadow 0.15s;
+    }
+    .preorder-submit-btn:hover:not(:disabled) {
+      background: #3E2723; color: #D4AF37;
+      box-shadow: 2px 2px 0 #D4AF37; transform: translate(2px, 2px);
+    }
+    .preorder-submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spinner {
+      width: 18px; height: 18px;
+      border: 2px solid currentColor; border-top-color: transparent;
+      border-radius: 50%; animation: spin 0.7s linear infinite;
+      display: inline-block;
     }
 
-    /* ======= Ring layout (unchanged) ======= */
-    .ring-container {
-      position: relative;
-      width: 800px;
-      height: 800px;
-      margin: 0 auto;
+    /* ── Success screen ── */
+    #preorder-success {
+      display: none; flex-direction: column; align-items: center;
+      justify-content: center; text-align: center;
+      padding: 60px 40px; gap: 20px; background: #EAE0D5; min-height: 400px;
     }
-    .ring-container::before {
-      content: '';
-      position: absolute;
-      inset: 30px;
-      border-radius: 50%;
-      border: 2px dashed #D4AF37;
-      opacity: 0.4;
+    #preorder-success.show { display: flex; }
+
+    @keyframes successPop {
+      0%   { transform: scale(0) rotate(-10deg); opacity: 0; }
+      60%  { transform: scale(1.15) rotate(2deg); opacity: 1; }
+      100% { transform: scale(1) rotate(0deg); opacity: 1; }
     }
-    .ring-container::after {
-      content: '';
-      position: absolute;
-      inset: 110px;
-      border-radius: 50%;
-      border: 1px dashed #3E2723;
-      opacity: 0.15;
+    .success-icon { animation: successPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+
+    @keyframes confettiFall {
+      0%   { transform: translateY(-10px) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(120px) rotate(720deg); opacity: 0; }
     }
-    .ring-member {
-      position: absolute;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-      width: 120px;
-      transform: translate(-50%, -50%);
+    .confetti-piece {
+      position: absolute; width: 8px; height: 8px;
+      animation: confettiFall 1.2s ease-in forwards;
     }
-    .ring-photo {
-      width: 180px; height: 180px;
-      border-radius: 50%;
-      border: 4px solid #3E2723;
-      overflow: hidden;
-      box-shadow: 3px 3px 0px #3E2723;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      flex-shrink: 0;
+
+    /* ── Pre-order Banner ── */
+    #preorder-banner {
+      background: #3E2723; color: #D4AF37; text-align: center;
+      padding: 10px 20px; font-family: 'Fraunces', serif;
+      font-size: 13px; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; border-bottom: 2px solid #D4AF37;
     }
+    #preorder-banner span {
+      color: #EAE0D5; font-weight: 400; font-family: 'Lora', serif;
+      text-transform: none; letter-spacing: 0; font-style: italic; font-size: 12px;
+    }
+
+    /* ── Ring ── */
+    .ring-container { position: relative; width: 800px; height: 800px; margin: 0 auto; }
+    .ring-container::before { content: ''; position: absolute; inset: 30px; border-radius: 50%; border: 2px dashed #D4AF37; opacity: 0.4; }
+    .ring-container::after  { content: ''; position: absolute; inset: 110px; border-radius: 50%; border: 1px dashed #3E2723; opacity: 0.15; }
+    .ring-member { position: absolute; display: flex; flex-direction: column; align-items: center; gap: 10px; width: 120px; transform: translate(-50%, -50%); }
+    .ring-photo { width: 180px; height: 180px; border-radius: 50%; border: 4px solid #3E2723; overflow: hidden; box-shadow: 3px 3px 0px #3E2723; transition: transform 0.3s ease, box-shadow 0.3s ease; flex-shrink: 0; }
     .ring-photo:hover { transform: scale(1.1); box-shadow: 5px 5px 0px #3E2723; }
-    .ring-photo img {
-      width: 100%; height: 100%;
-      object-fit: cover;
-      filter: sepia(0.5) contrast(1.1);
-      transition: filter 0.4s ease;
-    }
+    .ring-photo img { width: 100%; height: 100%; object-fit: cover; filter: sepia(0.5) contrast(1.1); transition: filter 0.4s ease; }
     .ring-photo:hover img { filter: sepia(0.8) hue-rotate(330deg) saturate(1.5) contrast(1.2); }
     .ring-label { text-align: center; line-height: 1.3; }
-    .ring-center {
-      position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      width: 180px; height: 180px;
-      border-radius: 50%;
-      border: 3px solid #3E2723;
-      background: #D6C5B3;
-      display: flex; align-items: center; justify-content: center;
-      overflow: hidden;
-    }
+    .ring-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 180px; height: 180px; border-radius: 50%; border: 3px solid #3E2723; background: #D6C5B3; display: flex; align-items: center; justify-content: center; overflow: hidden; }
     .ring-center img { width: 90%; height: 90%; object-fit: contain; mix-blend-mode: multiply; }
     @media (max-width: 640px) {
-      .ring-container {
-        width: 100%; height: auto;
-        display: grid; grid-template-columns: 1fr 1fr;
-        gap: 2rem; padding: 1rem;
-      }
+      .ring-container { width: 100%; height: auto; display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; padding: 1rem; }
       .ring-container::before, .ring-container::after { display: none; }
       .ring-member { position: static; transform: none; width: 100%; }
       .ring-center { display: none; }
@@ -437,25 +345,23 @@
 </head>
 
 <body class="font-body text-text-main overflow-x-hidden min-h-screen">
-
-  <!-- Paper noise overlay -->
   <div class="paper-overlay"></div>
 
-  <!-- ============================================================
-       CHECKOUT TOAST
-  ============================================================ -->
-  <div id="checkout-toast">🎉 Order placed! Thank you for choosing Muchhad.</div>
+  <!-- Pre-order Banner -->
+  <div id="preorder-banner">
+    🎉 Pre-orders now open! &nbsp;<span>We're baking our first batch — reserve yours today.</span>
+  </div>
 
-  <!-- ============================================================
-       CART BACKDROP
-  ============================================================ -->
+  <!-- Checkout Toast -->
+  <div id="checkout-toast">🎉 Pre-order placed! Thank you for choosing Muchhad.</div>
+
+  <!-- Cart Backdrop -->
   <div id="cart-backdrop" onclick="closeCart()"></div>
 
   <!-- ============================================================
        CART SIDEBAR
   ============================================================ -->
   <div id="cart-sidebar" role="dialog" aria-label="Shopping cart">
-    <!-- Header -->
     <div class="cart-header">
       <div>
         <h2 class="font-display text-2xl font-bold uppercase tracking-widest text-text-main">Your Cart</h2>
@@ -465,13 +371,7 @@
         <span class="material-symbols-outlined text-xl group-hover:rotate-90 transition-transform duration-200">close</span>
       </button>
     </div>
-
-    <!-- Cart items body -->
-    <div class="cart-body" id="cart-items-list">
-      <!-- Populated by JS -->
-    </div>
-
-    <!-- Footer -->
+    <div class="cart-body" id="cart-items-list"></div>
     <div class="cart-footer">
       <div class="flex justify-between items-center mb-4">
         <span class="font-display text-sm uppercase tracking-wider font-semibold text-text-muted">Subtotal</span>
@@ -481,8 +381,12 @@
         <span class="material-symbols-outlined text-sm">local_shipping</span>
         Free shipping on orders over ₹499
       </div>
-      <button id="checkout-btn" onclick="handleCheckout()" class="w-full h-14 bg-primary text-text-main font-display text-base font-bold uppercase tracking-[0.12em] border-2 border-text-main hover:bg-text-main hover:text-primary transition-all duration-300 flex items-center justify-center gap-3 shadow-[4px_4px_0px_#3E2723] hover:shadow-[2px_2px_0px_#3E2723] hover:translate-y-[2px]">
-        Proceed to Checkout
+      <div class="flex items-center gap-2 bg-primary/30 border border-primary px-3 py-2 mb-3">
+        <span class="material-symbols-outlined text-sm text-primary" style="font-variation-settings:'FILL' 1;">schedule</span>
+        <span class="font-display text-xs font-bold uppercase tracking-widest text-text-main">Pre-Order — Ships when ready</span>
+      </div>
+      <button id="checkout-btn" onclick="openPreorderModal()" class="w-full h-14 bg-primary text-text-main font-display text-base font-bold uppercase tracking-[0.12em] border-2 border-text-main hover:bg-text-main hover:text-primary transition-all duration-300 flex items-center justify-center gap-3 shadow-[4px_4px_0px_#3E2723] hover:shadow-[2px_2px_0px_#3E2723] hover:translate-y-[2px]">
+        Reserve My Order
         <span class="material-symbols-outlined">arrow_forward</span>
       </button>
       <button onclick="closeCart()" class="w-full h-10 mt-3 border-2 border-text-main/40 font-display text-sm uppercase tracking-wider font-semibold text-text-muted hover:border-text-main hover:text-text-main transition-all">
@@ -497,46 +401,33 @@
   <div id="product-modal" role="dialog" aria-modal="true">
     <div id="product-modal-backdrop" onclick="closeModal()"></div>
     <div id="product-modal-box">
-      <!-- Close button -->
       <button onclick="closeModal()" class="absolute top-4 right-4 z-10 w-10 h-10 border-2 border-text-main flex items-center justify-center bg-background-light hover:bg-text-main hover:text-background-light transition-all group">
         <span class="material-symbols-outlined text-xl group-hover:rotate-90 transition-transform duration-200">close</span>
       </button>
-
       <div class="modal-inner">
-        <!-- Image panel -->
         <div class="relative bg-surface border-r-2 border-text-main flex items-center justify-center p-8 min-h-[320px]">
           <div class="absolute top-3 left-3 w-3 h-3 border-t-2 border-l-2 border-text-main"></div>
           <div class="absolute top-3 right-3 w-3 h-3 border-t-2 border-r-2 border-text-main"></div>
           <div class="absolute bottom-3 left-3 w-3 h-3 border-b-2 border-l-2 border-text-main"></div>
           <div class="absolute bottom-3 right-3 w-3 h-3 border-b-2 border-r-2 border-text-main"></div>
-          <img id="modal-img" src="" alt="" class="w-full max-w-xs aspect-square object-cover border-2 border-text-main sepia-img shadow-[6px_6px_0px_#3E2723]" />
-          <!-- Badge -->
+          <img id="modal-img" src="" alt="" class="w-full max-w-xs aspect-square object-cover border-2 border-text-main sepia-img shadow-[6px_6px_0px_#3E2723]"/>
           <div id="modal-badge" class="absolute top-6 left-6 bg-primary border-2 border-text-main px-3 py-1 font-display text-xs font-bold uppercase tracking-widest text-text-main shadow-[2px_2px_0px_#3E2723]"></div>
         </div>
-
-        <!-- Info panel -->
         <div class="flex flex-col p-8 gap-5">
           <div>
-            <span class="font-display text-primary text-xs uppercase tracking-widest font-bold" id="modal-category">Biscuits</span>
+            <span class="font-display text-primary text-xs uppercase tracking-widest font-bold" id="modal-category"></span>
             <h2 class="font-display text-3xl md:text-4xl font-bold text-text-main leading-tight mt-1" id="modal-title"></h2>
             <p class="font-body text-sm italic text-text-muted mt-1" id="modal-subtitle"></p>
           </div>
-
           <div class="w-16 h-0.5 bg-text-main"></div>
-
           <p class="font-body text-base text-text-main leading-relaxed" id="modal-description"></p>
-
-          <!-- Ingredients -->
           <div class="bg-surface border-2 border-text-main p-4 relative">
             <div class="absolute -top-3 left-4 bg-background-light px-2">
               <span class="font-display text-xs font-bold uppercase tracking-widest text-primary">Key Ingredients</span>
             </div>
             <ul class="flex flex-wrap gap-2 mt-2" id="modal-ingredients"></ul>
           </div>
-
-          <!-- Why it's good -->
           <div id="modal-perks" class="flex flex-wrap gap-3"></div>
-
           <div class="mt-auto flex flex-col gap-3 pt-2">
             <div class="flex items-center justify-between">
               <span class="font-display text-3xl font-bold text-text-main" id="modal-price"></span>
@@ -553,58 +444,143 @@
   </div>
 
   <!-- ============================================================
-       STICKY NAVBAR
+       PRE-ORDER MODAL
   ============================================================ -->
-  <header class="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 md:px-16 lg:px-32 h-[72px] bg-background-light/90 backdrop-blur-sm border-b-2 border-text-main/10">
+  <div id="preorder-modal" role="dialog" aria-modal="true">
+    <div id="preorder-modal-backdrop" onclick="closePreorderModal()"></div>
+    <div id="preorder-modal-box">
+      <button onclick="closePreorderModal()" class="absolute top-4 right-4 z-20 w-10 h-10 border-2 border-text-main flex items-center justify-center bg-background-light hover:bg-text-main hover:text-background-light transition-all group">
+        <span class="material-symbols-outlined text-xl group-hover:rotate-90 transition-transform duration-200">close</span>
+      </button>
 
-    <!-- Logo -->
+      <!-- Form view -->
+      <div id="preorder-form-view" class="preorder-grid">
+        <!-- Left: Order summary -->
+        <div class="preorder-summary">
+          <div>
+            <span class="font-display text-primary text-xs uppercase tracking-widest font-bold">Your Pre-Order</span>
+            <h3 class="font-display text-2xl font-bold text-text-main mt-1 leading-tight">Reserve Your Batch</h3>
+            <p class="font-body text-sm italic text-text-muted mt-2">We'll notify you when your order is ready to ship.</p>
+          </div>
+          <div class="w-12 h-0.5 bg-text-main"></div>
+          <div id="preorder-items-list" class="flex flex-col gap-3 flex-1 overflow-y-auto"></div>
+          <div class="border-t-2 border-text-main pt-4 mt-auto">
+            <div class="flex justify-between items-center">
+              <span class="font-display text-sm uppercase tracking-wider font-semibold text-text-muted">Order Total</span>
+              <span class="font-display text-2xl font-bold text-text-main" id="preorder-total-display">₹0.00</span>
+            </div>
+            <div class="flex items-center gap-2 mt-3 bg-accent/20 border border-accent px-3 py-2">
+              <span class="material-symbols-outlined text-sm text-accent" style="font-variation-settings:'FILL' 1;">verified</span>
+              <span class="font-body text-xs text-text-main">No payment now. Pay on delivery.</span>
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div class="flex items-start gap-2"><span class="material-symbols-outlined text-primary text-base mt-0.5" style="font-variation-settings:'FILL' 1;">eco</span><span class="font-body text-xs text-text-muted">No preservatives, ever</span></div>
+            <div class="flex items-start gap-2"><span class="material-symbols-outlined text-primary text-base mt-0.5" style="font-variation-settings:'FILL' 1;">home</span><span class="font-body text-xs text-text-muted">Homemade recipe</span></div>
+            <div class="flex items-start gap-2"><span class="material-symbols-outlined text-primary text-base mt-0.5" style="font-variation-settings:'FILL' 1;">local_shipping</span><span class="font-body text-xs text-text-muted">Free shipping ₹499+</span></div>
+            <div class="flex items-start gap-2"><span class="material-symbols-outlined text-primary text-base mt-0.5" style="font-variation-settings:'FILL' 1;">schedule</span><span class="font-body text-xs text-text-muted">Ships when ready</span></div>
+          </div>
+        </div>
+
+        <!-- Right: Form -->
+        <div class="preorder-form-panel">
+          <div>
+            <span class="font-display text-primary text-xs uppercase tracking-widest font-bold">Your Details</span>
+            <h3 class="font-display text-2xl font-bold text-text-main mt-1">Tell us where to send it</h3>
+          </div>
+          <div class="grid grid-cols-1 gap-5">
+            <div class="field-wrap">
+              <label class="field-label" for="po-name">Full Name <span class="text-red-600">*</span></label>
+              <input class="field-input" id="po-name" type="text" placeholder="e.g. Priya Sharma" autocomplete="name"/>
+              <span class="field-error" id="po-name-err"></span>
+            </div>
+            <div class="field-wrap">
+              <label class="field-label" for="po-email">Email Address <span class="text-red-600">*</span></label>
+              <input class="field-input" id="po-email" type="email" placeholder="you@example.com" autocomplete="email"/>
+              <span class="field-error" id="po-email-err"></span>
+            </div>
+            <div class="field-wrap">
+              <label class="field-label" for="po-phone">Mobile Number <span class="text-red-600">*</span></label>
+              <input class="field-input" id="po-phone" type="tel" placeholder="10-digit mobile number" autocomplete="tel" maxlength="10"/>
+              <span class="field-error" id="po-phone-err"></span>
+            </div>
+            <div class="field-wrap">
+              <label class="field-label" for="po-address">Delivery Address <span class="text-red-600">*</span></label>
+              <textarea class="field-input" id="po-address" placeholder="House/Flat no., Street, Area, City, State — PIN code" autocomplete="street-address"></textarea>
+              <span class="field-error" id="po-address-err"></span>
+            </div>
+          </div>
+          <div id="po-api-error" class="hidden bg-red-50 border-2 border-red-300 px-4 py-3 font-body text-sm text-red-700 italic"></div>
+          <button class="preorder-submit-btn" id="po-submit-btn" onclick="submitPreorder()">
+            <span class="material-symbols-outlined text-base">bookmark_added</span>
+            Confirm Pre-Order
+          </button>
+          <p class="font-body text-xs text-text-muted italic text-center">
+            No payment charged now. We'll reach out when your batch is ready.
+          </p>
+        </div>
+      </div>
+
+      <!-- Success screen -->
+      <div id="preorder-success">
+        <div class="relative">
+          <div id="confetti-container" class="absolute overflow-hidden pointer-events-none" style="width:200px; height:200px; left:50%; top:0; transform:translateX(-50%);"></div>
+          <div class="success-icon w-24 h-24 bg-accent border-4 border-text-main flex items-center justify-center mx-auto shadow-[6px_6px_0px_#3E2723]">
+            <span class="material-symbols-outlined text-5xl text-white" style="font-variation-settings:'FILL' 1;">check_circle</span>
+          </div>
+        </div>
+        <div class="space-y-2">
+          <p class="font-display text-xs uppercase tracking-widest text-primary font-bold">Pre-Order Confirmed</p>
+          <h3 class="font-display text-3xl md:text-4xl font-bold text-text-main">You're in the first batch!</h3>
+          <p class="font-body text-base text-text-muted italic max-w-sm" id="success-message"></p>
+        </div>
+        <div class="w-full max-w-sm bg-surface border-2 border-text-main p-5 space-y-3">
+          <p class="font-display text-xs uppercase tracking-widest text-text-muted font-bold">What happens next?</p>
+          <div class="space-y-2">
+            <div class="flex items-start gap-3"><span class="font-display text-primary font-bold text-sm mt-0.5">01</span><span class="font-body text-sm text-text-main">We bake your batch fresh — no preservatives, ever.</span></div>
+            <div class="flex items-start gap-3"><span class="font-display text-primary font-bold text-sm mt-0.5">02</span><span class="font-body text-sm text-text-main">You get a dispatch notification with tracking details.</span></div>
+            <div class="flex items-start gap-3"><span class="font-display text-primary font-bold text-sm mt-0.5">03</span><span class="font-body text-sm text-text-main">Your biscuits arrive fresh. Pay on delivery.</span></div>
+          </div>
+        </div>
+        <button onclick="closePreorderModal()" class="h-12 px-10 bg-primary text-text-main font-display text-sm font-bold uppercase tracking-[0.12em] border-2 border-text-main hover:bg-text-main hover:text-primary transition-all shadow-[3px_3px_0px_#3E2723]">
+          Back to Shop
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       NAVBAR
+  ============================================================ -->
+  <header class="sticky top-0 left-0 right-0 z-50 flex items-center justify-between px-6 md:px-16 lg:px-32 h-[72px] bg-background-light/90 backdrop-blur-sm border-b-2 border-text-main/10">
     <a href="#hero" class="flex items-center gap-3 text-text-main">
       <span class="text-primary w-6 h-6 flex items-center justify-center">
-        <svg fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path d="M22.5 13.5c-1.5 0-2.8-.8-3.5-2-.7 1.2-2 2-3.5 2s-2.8-.8-3.5-2c-.7 1.2-2 2-3.5 2s-2.8-.8-3.5-2C4.3 12.7 3 13.5 1.5 13.5c-.8 0-1.5-.7-1.5-1.5s.7-1.5 1.5-1.5c2.5 0 4.5 2 4.5 4.5 0-2.5 2-4.5 4.5-4.5s4.5 2 4.5 4.5c0-2.5 2-4.5 4.5-4.5 2.5 0 4.5 2 4.5 4.5 0 .8-.7 1.5-1.5 1.5z"/>
-        </svg>
+        <svg fill="currentColor" viewBox="0 0 24 24"><path d="M22.5 13.5c-1.5 0-2.8-.8-3.5-2-.7 1.2-2 2-3.5 2s-2.8-.8-3.5-2c-.7 1.2-2 2-3.5 2s-2.8-.8-3.5-2C4.3 12.7 3 13.5 1.5 13.5c-.8 0-1.5-.7-1.5-1.5s.7-1.5 1.5-1.5c2.5 0 4.5 2 4.5 4.5 0-2.5 2-4.5 4.5-4.5s4.5 2 4.5 4.5c0-2.5 2-4.5 4.5-4.5 2.5 0 4.5 2 4.5 4.5 0 .8-.7 1.5-1.5 1.5z"/></svg>
       </span>
       <span class="font-display text-xl font-bold tracking-widest uppercase">Muchhad</span>
     </a>
-
-    <!-- Nav links -->
     <nav class="hidden md:flex items-center gap-8">
       <a href="#origin"      class="font-display text-sm font-semibold uppercase tracking-widest hover:text-primary transition-colors">Our Story</a>
       <a href="#spark"       class="font-display text-sm font-semibold uppercase tracking-widest hover:text-primary transition-colors">The Spark</a>
       <a href="#partnership" class="font-display text-sm font-semibold uppercase tracking-widest hover:text-primary transition-colors">The Team</a>
       <a href="#product"     class="font-display text-sm font-semibold uppercase tracking-widest hover:text-primary transition-colors">Shop</a>
     </nav>
-
-    <!-- Right side: Cart + CTA -->
     <div class="flex items-center gap-3">
-      <!-- Cart icon button -->
       <button onclick="openCart()" class="relative flex items-center justify-center w-10 h-10 border-2 border-text-main hover:bg-text-main hover:text-background-light transition-all group" aria-label="Open cart">
         <span class="material-symbols-outlined text-xl" style="font-variation-settings:'FILL' 0;">shopping_basket</span>
         <span id="cart-badge">0</span>
       </button>
-
-      <a href="#product" class="hidden md:flex items-center justify-center border-2 border-text-main h-10 px-6 bg-primary text-text-main font-display text-sm font-bold uppercase tracking-widest hover:bg-text-main hover:text-primary transition-all duration-300">
-        Grab a Pack
-      </a>
-
-      <!-- Mobile hamburger -->
+      <a href="#product" class="hidden md:flex items-center justify-center border-2 border-text-main h-10 px-6 bg-primary text-text-main font-display text-sm font-bold uppercase tracking-widest hover:bg-text-main hover:text-primary transition-all duration-300">Grab a Pack</a>
       <span class="md:hidden material-symbols-outlined text-3xl cursor-pointer">menu</span>
     </div>
   </header>
 
-
-  <!-- ============================================================
-       PAGE 1 — HERO
-  ============================================================ -->
+  <!-- ============================================================ HERO ============================================================ -->
   <section id="hero" class="relative min-h-screen w-full flex flex-col items-center justify-center px-4 pt-[72px]">
     <div class="flex flex-col items-center justify-center text-center max-w-4xl mx-auto space-y-8">
-      <img src="logo.png" alt="Muchhad Logo"
-           class="w-64 md:w-80 lg:w-96 drop-shadow-lg animate-fade-up mix-blend-multiply"/>
-      <p class="text-text-main font-body text-xl md:text-2xl font-normal max-w-2xl mx-auto leading-relaxed">
-        Healthy biscuits. Born in a home, baked for everyone.
-      </p>
-      <a href="#origin"
-         class="mt-8 flex cursor-pointer items-center justify-center border-2 border-text-main h-14 px-8 bg-transparent text-text-main font-display text-base font-bold uppercase tracking-widest hover:bg-text-main hover:text-background-light transition-all duration-300 relative group overflow-hidden">
+      <img src="logo.png" alt="Muchhad Logo" class="w-64 md:w-80 lg:w-96 drop-shadow-lg animate-fade-up mix-blend-multiply"/>
+      <p class="text-text-main font-body text-xl md:text-2xl font-normal max-w-2xl mx-auto leading-relaxed">Healthy biscuits. Born in a home, baked for everyone.</p>
+      <a href="#origin" class="mt-8 flex cursor-pointer items-center justify-center border-2 border-text-main h-14 px-8 bg-transparent text-text-main font-display text-base font-bold uppercase tracking-widest hover:bg-text-main hover:text-background-light transition-all duration-300 relative group overflow-hidden">
         <span class="relative z-10">Discover the Recipe</span>
         <div class="absolute inset-0 bg-primary scale-x-0 origin-left transition-transform duration-300 ease-out group-hover:scale-x-100 -z-0"></div>
       </a>
@@ -615,40 +591,27 @@
     </div>
   </section>
 
-
-  <!-- ============================================================
-       PAGE 2 — THE ORIGIN
-  ============================================================ -->
+  <!-- ============================================================ ORIGIN ============================================================ -->
   <section id="origin" class="w-full py-24 px-6 md:px-12 lg:px-24 flex items-center min-h-screen border-t-2 border-text-main/20 relative overflow-hidden">
-    <div class="absolute top-10 right-10 opacity-20 text-accent rotate-12">
-      <svg fill="currentColor" height="64" viewBox="0 0 24 24" width="64">
-        <path d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22l.95-2.3C7.14 19.87 7.64 20 8 20c11 0 14-17 14-17-1 2-8 2.25-13 3.25C4 7.25 2 11.5 2 13.5S3.75 17.25 3.75 17.25C7 8 17 8 17 8Z"/>
-      </svg>
-    </div>
+    <div class="absolute top-10 right-10 opacity-20 text-accent rotate-12"><svg fill="currentColor" height="64" viewBox="0 0 24 24" width="64"><path d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22l.95-2.3C7.14 19.87 7.64 20 8 20c11 0 14-17 14-17-1 2-8 2.25-13 3.25C4 7.25 2 11.5 2 13.5S3.75 17.25 3.75 17.25C7 8 17 8 17 8Z"/></svg></div>
     <div class="max-w-7xl mx-auto w-full flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
       <div class="w-full lg:w-1/2 flex justify-center animate-fade-up">
         <div class="relative w-full max-w-md aspect-[4/5] bg-surface hard-border p-4 shadow-[8px_8px_0px_#3E2723]">
           <img alt="Rustic kitchen setting" class="w-full h-full object-cover sepia-img border border-text-muted" src="mother.PNG"/>
-          <div class="absolute -top-6 -left-6 text-accent w-16 h-16 opacity-80">
-            <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C12 2 15 7 15 12C15 17 12 22 12 22C12 22 9 17 9 12C9 7 12 2 12 2Z"/></svg>
-          </div>
-          <div class="absolute -bottom-4 -right-4 text-accent w-12 h-12 opacity-80 rotate-45">
-            <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C12 2 15 7 15 12C15 17 12 22 12 22C12 22 9 17 9 12C9 7 12 2 12 2Z"/></svg>
-          </div>
+          <div class="absolute -top-6 -left-6 text-accent w-16 h-16 opacity-80"><svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C12 2 15 7 15 12C15 17 12 22 12 22C12 22 9 17 9 12C9 7 12 2 12 2Z"/></svg></div>
+          <div class="absolute -bottom-4 -right-4 text-accent w-12 h-12 opacity-80 rotate-45"><svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C12 2 15 7 15 12C15 17 12 22 12 22C12 22 9 17 9 12C9 7 12 2 12 2Z"/></svg></div>
         </div>
       </div>
       <div class="w-full lg:w-1/2 flex flex-col gap-8">
         <div class="flex flex-col gap-4">
           <span class="font-display text-primary text-sm uppercase tracking-widest font-bold">The Origin</span>
           <h2 class="font-display text-5xl md:text-[64px] leading-[1.1] text-text-main tracking-tight">It Started With a Mother's Love.</h2>
-          <div class="w-24 h-1 bg-text-main mt-2 relative">
-            <div class="absolute -bottom-1 left-0 w-full h-2 bg-accent opacity-50 -skew-x-12"></div>
-          </div>
+          <div class="w-24 h-1 bg-text-main mt-2 relative"><div class="absolute -bottom-1 left-0 w-full h-2 bg-accent opacity-50 -skew-x-12"></div></div>
         </div>
         <div class="font-body text-lg text-text-main leading-relaxed space-y-6">
-          <p>In a warm, bustling kitchen filled with the scent of toasted grains. A brother stood quietly, watching his sister bake biscuits—not for business, not for profit, but for her children. Every ingredient she used had a purpose. Whole wheat for nourishment, jaggery for natural sweetness, and not a trace of chemicals or preservatives. It wasn't just baking—it was care in its purest form.</p>
+          <p>In a warm, bustling kitchen filled with the scent of toasted grains. A brother stood quietly, watching his sister bake biscuits—not for business, not for profit, but for her children. Every ingredient she used had a purpose. Whole wheat for nourishment, jaggery for natural sweetness, and not a trace of chemicals or preservatives.</p>
           <p>That moment stayed with him.</p>
-          <p>He began to wonder—if a mother can go this far to ensure her children eat something real and healthy, why isn't the same care reflected in the biscuits we all consume every day? In a country where biscuits are a part of daily life—from morning chai to evening hunger pangs—why have we accepted products filled with artificial ingredients as the norm?</p>
+          <p>He began to wonder—if a mother can go this far to ensure her children eat something real and healthy, why isn't the same care reflected in the biscuits we all consume every day?</p>
           <p>That question became a mission.</p>
           <p class="italic text-text-muted">And that's how Muchhad Biscuits was born.</p>
         </div>
@@ -656,52 +619,34 @@
     </div>
   </section>
 
-
-  <!-- ============================================================
-       PAGE 3 — THE SPARK
-  ============================================================ -->
+  <!-- ============================================================ SPARK ============================================================ -->
   <section id="spark" class="w-full py-24 px-4 flex items-center justify-center min-h-screen border-t-2 border-text-main/20 relative overflow-hidden">
     <div class="w-full max-w-[800px] mx-auto relative z-10">
       <div class="bg-surface p-10 md:p-16 hard-border relative">
-        <div class="absolute top-2 left-2   w-3 h-3 border-t-2 border-l-2 border-text-main"></div>
-        <div class="absolute top-2 right-2  w-3 h-3 border-t-2 border-r-2 border-text-main"></div>
-        <div class="absolute bottom-2 left-2  w-3 h-3 border-b-2 border-l-2 border-text-main"></div>
+        <div class="absolute top-2 left-2 w-3 h-3 border-t-2 border-l-2 border-text-main"></div>
+        <div class="absolute top-2 right-2 w-3 h-3 border-t-2 border-r-2 border-text-main"></div>
+        <div class="absolute bottom-2 left-2 w-3 h-3 border-b-2 border-l-2 border-text-main"></div>
         <div class="absolute bottom-2 right-2 w-3 h-3 border-b-2 border-r-2 border-text-main"></div>
         <div class="flex flex-col items-center text-center space-y-8">
           <span class="font-display text-primary text-sm uppercase tracking-widest font-bold">The Spark</span>
           <blockquote class="space-y-4">
-            <p class="font-news text-3xl md:text-[36px] italic font-bold leading-tight tracking-tight text-text-main">
-              "Why should only babies get the good stuff?"
-            </p>
+            <p class="font-news text-3xl md:text-[36px] italic font-bold leading-tight tracking-tight text-text-main">"Why should only babies get the good stuff?"</p>
             <footer class="font-display text-lg font-semibold text-text-muted">— Vikash Bhaiya</footer>
           </blockquote>
-          <div class="py-2 text-primary">
-            <svg fill="currentColor" height="24" viewBox="0 0 64 24" width="64">
-              <path d="M32 10.5C28.5 2 20 0 14 0C6 0 0 6.5 0 14.5C0 22.5 7.5 24 12 24C16.5 24 21 20.5 26 15C28.5 12 30.5 10.5 32 10.5C33.5 10.5 35.5 12 38 15C43 20.5 47.5 24 52 24C56.5 24 64 22.5 64 14.5C64 6.5 58 0 50 0C44 0 35.5 2 32 10.5Z"/>
-            </svg>
-          </div>
-          <p class="font-body text-lg md:text-xl leading-relaxed text-text-main max-w-2xl">
-            Vikas realized the biscuits were not only healthy but incredibly tasty. The spark was lit—why not share this wholesome goodness with everyone?
-          </p>
+          <div class="py-2 text-primary"><svg fill="currentColor" height="24" viewBox="0 0 64 24" width="64"><path d="M32 10.5C28.5 2 20 0 14 0C6 0 0 6.5 0 14.5C0 22.5 7.5 24 12 24C16.5 24 21 20.5 26 15C28.5 12 30.5 10.5 32 10.5C33.5 10.5 35.5 12 38 15C43 20.5 47.5 24 52 24C56.5 24 64 22.5 64 14.5C64 6.5 58 0 50 0C44 0 35.5 2 32 10.5Z"/></svg></div>
+          <p class="font-body text-lg md:text-xl leading-relaxed text-text-main max-w-2xl">Vikas realized the biscuits were not only healthy but incredibly tasty. The spark was lit—why not share this wholesome goodness with everyone?</p>
         </div>
       </div>
     </div>
   </section>
 
-
-  <!-- ============================================================
-       PAGE 4 — THE PARTNERSHIP
-  ============================================================ -->
+  <!-- ============================================================ PARTNERSHIP ============================================================ -->
   <section id="partnership" class="relative w-full min-h-screen flex items-center justify-center py-20 px-6 lg:px-12 border-t-2 border-text-main/20 overflow-hidden">
     <div class="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
       <div class="flex flex-col space-y-8 order-2 lg:order-1 relative z-10">
         <div class="relative inline-block w-fit">
-          <h2 class="font-display text-5xl lg:text-6xl font-bold leading-tight text-text-main tracking-tight">
-            Two Minds,<br/>One Batch.
-          </h2>
-          <svg class="absolute -bottom-4 left-0 w-full h-4 text-primary" fill="none" viewBox="0 0 200 12">
-            <path d="M2 9.5C45.5 -1.5 120 -2.5 198 8.5" stroke="currentColor" stroke-linecap="round" stroke-width="3"/>
-          </svg>
+          <h2 class="font-display text-5xl lg:text-6xl font-bold leading-tight text-text-main tracking-tight">Two Minds,<br/>One Batch.</h2>
+          <svg class="absolute -bottom-4 left-0 w-full h-4 text-primary" fill="none" viewBox="0 0 200 12"><path d="M2 9.5C45.5 -1.5 120 -2.5 198 8.5" stroke="currentColor" stroke-linecap="round" stroke-width="3"/></svg>
         </div>
         <div class="space-y-6 font-body text-lg lg:text-xl text-text-main leading-relaxed max-w-lg mt-4">
           <p>Vikas knew he had stumbled onto something special in his sister's kitchen. But turning a homemade, health-first recipe into a biscuit for everyone required more than just passion—it required scale without losing the soul.</p>
@@ -714,24 +659,20 @@
           <div class="relative h-full w-full bg-surface hard-border overflow-hidden shadow-[4px_4px_0px_rgba(62,39,35,0.1)] transition-transform duration-500 group-hover:-translate-x-1 group-hover:-translate-y-1 p-3">
             <div class="absolute inset-3 border border-text-main/30 pointer-events-none z-10"></div>
             <div class="w-full h-full overflow-hidden">
-              <img alt="Two men reviewing plans in a workshop setting"
-                   class="object-cover w-full h-full opacity-90 sepia-img mix-blend-multiply"
+              <img alt="Two men reviewing plans" class="object-cover w-full h-full opacity-90 sepia-img mix-blend-multiply"
                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5SNY3ZkQ0oieUwULLvqQG8KryFjxmk4EG_VW4lcqufJfwhJuKJLqn89eMqutRDQcXQiVJxl_mo_0Eapw-rLABT71JlFxYGKibxu9cH9rTYtJHYqH7G6sBGh5B0UIHPrBxsPQfsttcp3Gy3MufaeDLn6F9K7ekWddqfAbd_zKtg0FkjaeQEZ3j3HUlPyKvWvngpgH5EoR3koxnyYBFqIlNctIoAK9SwO68kZNH3j90pqKKF8bNKIiCHy4egkjsjbFGvmnSo4CTy7o"/>
             </div>
           </div>
-          <div class="absolute -top-2 -left-2   w-4 h-4 bg-text-main rounded-full z-20"></div>
-          <div class="absolute -top-2 -right-2  w-4 h-4 bg-text-main rounded-full z-20"></div>
-          <div class="absolute -bottom-2 -left-2  w-4 h-4 bg-text-main rounded-full z-20"></div>
+          <div class="absolute -top-2 -left-2 w-4 h-4 bg-text-main rounded-full z-20"></div>
+          <div class="absolute -top-2 -right-2 w-4 h-4 bg-text-main rounded-full z-20"></div>
+          <div class="absolute -bottom-2 -left-2 w-4 h-4 bg-text-main rounded-full z-20"></div>
           <div class="absolute -bottom-2 -right-2 w-4 h-4 bg-text-main rounded-full z-20"></div>
         </div>
       </div>
     </div>
   </section>
 
-
-  <!-- ============================================================
-       PAGE 5 — THE FACES BEHIND THE BATCH (Team)
-  ============================================================ -->
+  <!-- ============================================================ TEAM ============================================================ -->
   <section id="team" class="w-full py-24 px-4 sm:px-6 lg:px-8 border-t-2 border-text-main/20">
     <div class="text-center mb-16 max-w-7xl mx-auto">
       <h2 class="font-display text-5xl md:text-6xl font-bold text-text-main mb-4 tracking-tight">The Faces Behind the Batch</h2>
@@ -740,217 +681,41 @@
         <span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings:'FILL' 1;">local_cafe</span>
         <div class="h-[2px] w-16 bg-text-main"></div>
       </div>
-      <p class="mt-6 font-body text-xl text-text-muted max-w-2xl mx-auto italic">
-        Real people, real ingredients, and a whole lot of love. Meet the family bringing homemade goodness to everyone.
-      </p>
+      <p class="mt-6 font-body text-xl text-text-muted max-w-2xl mx-auto italic">Real people, real ingredients, and a whole lot of love.</p>
     </div>
-
     <div class="ring-container">
       <div class="ring-center"><img src="logo.png" alt="Muchhad"/></div>
-
-      <!-- 7 members · 360°÷7 ≈ 51.43° apart · R = 38%
-           Angles  : 0° | 51.4° | 102.9° | 154.3° | 205.7° | 257.1° | 308.6°
-           Formula : left = 50 + 38·sin(θ)   top = 50 − 38·cos(θ)            -->
-
-      <!-- 0° — top centre -->
-      <div class="ring-member" style="top:12%; left:50%;">
-        <div class="ring-photo"><img alt="The Sister" src="didi.jpeg"/></div>
-        <div class="ring-label">
-          <p class="font-display text-xs font-bold text-text-main uppercase tracking-wider">Laxmi Singh</p>
-          <p class="font-body text-[11px] text-text-muted italic">Spark &amp; Love</p>
-        </div>
-      </div>
-
-      <!-- 51.4° — upper right -->
-      <div class="ring-member" style="top:26%; left:80%;">
-        <div class="ring-photo"><img alt="Vikas Bhaiya" src="vikas.jpg"/></div>
-        <div class="ring-label">
-          <p class="font-display text-xs font-bold text-text-main uppercase tracking-wider">Vikash Singh</p>
-          <p class="font-body text-[11px] text-text-muted italic">Founder</p>
-        </div>
-      </div>
-
-      <!-- 102.9° — right -->
-      <div class="ring-member" style="top:58%; left:87%;">
-        <div class="ring-photo"><img alt="Vipul Arya" src="vipul.jpeg"/></div>
-        <div class="ring-label">
-          <p class="font-display text-xs font-bold text-text-main uppercase tracking-wider">Vipul Kumar Arya</p>
-          <p class="font-body text-[11px] text-text-muted italic">Co-founder &amp; Advisor </p>
-        </div>
-      </div>
-
-      <!-- 154.3° — lower right -->
-      <div class="ring-member" style="top:84%; left:67%;">
-        <div class="ring-photo"><img alt="Deepanshu" src="deepanshu.jpg"/></div>
-        <div class="ring-label">
-          <p class="font-display text-xs font-bold text-text-main uppercase tracking-wider">Deepanshu</p>
-          <p class="font-body text-[11px] text-text-muted italic">CTO</p>
-        </div>
-      </div>
-
-      <!-- 205.7° — lower left -->
-      <div class="ring-member" style="top:84%; left:34%;">
-        <div class="ring-photo"><img alt="Krishna" src="krishna.jpeg"/></div>
-        <div class="ring-label">
-          <p class="font-display text-xs font-bold text-text-main uppercase tracking-wider">Neeraj Tiwari</p>
-          <p class="font-body text-[11px] text-text-muted italic">Accounts &amp; Finance Manager</p>
-        </div>
-      </div>
-
-      <!-- 257.1° — left -->
-      <div class="ring-member" style="top:58%; left:13%;">
-        <div class="ring-photo"><img alt="Annu" src="annu.jpeg"/></div>
-        <div class="ring-label">
-          <p class="font-display text-xs font-bold text-text-main uppercase tracking-wider">Annu Singh</p>
-          <p class="font-body text-[11px] text-text-muted italic">Resource Manager</p>
-        </div>
-      </div>
-
-      <!-- 308.6° — upper left  ← NEW 7th member -->
-      <div class="ring-member" style="top:26%; left:20%;">
-        <div class="ring-photo"><img alt="New Member" src="gautam.jpeg"
-             onerror="this.style.display='none'; this.parentElement.style.background='#D6C5B3'; this.parentElement.innerHTML+='<span style=\'font-family:Fraunces,serif;font-size:32px;font-weight:700;color:#795548;\'>?</span>'"/></div>
-        <div class="ring-label">
-          <p class="font-display text-xs font-bold text-text-main uppercase tracking-wider">Gautam Singh</p>
-          <p class="font-body text-[11px] text-text-muted italic">Co-Founder</p>
-        </div>
-      </div>
-
+      <div class="ring-member" style="top:12%; left:50%;"><div class="ring-photo"><img alt="Laxmi Singh" src="didi.jpeg"/></div><div class="ring-label"><p class="font-display text-xs font-bold text-text-main uppercase tracking-wider">Laxmi Singh</p><p class="font-body text-[11px] text-text-muted italic">Spark &amp; Love</p></div></div>
+      <div class="ring-member" style="top:26%; left:80%;"><div class="ring-photo"><img alt="Vikash Singh" src="vikas.jpg"/></div><div class="ring-label"><p class="font-display text-xs font-bold text-text-main uppercase tracking-wider">Vikash Singh</p><p class="font-body text-[11px] text-text-muted italic">Founder</p></div></div>
+      <div class="ring-member" style="top:58%; left:87%;"><div class="ring-photo"><img alt="Vipul Arya" src="vipul.jpeg"/></div><div class="ring-label"><p class="font-display text-xs font-bold text-text-main uppercase tracking-wider">Vipul Kumar Arya</p><p class="font-body text-[11px] text-text-muted italic">Co-founder &amp; Advisor</p></div></div>
+      <div class="ring-member" style="top:84%; left:67%;"><div class="ring-photo"><img alt="Deepanshu" src="deepanshu.jpg"/></div><div class="ring-label"><p class="font-display text-xs font-bold text-text-main uppercase tracking-wider">Deepanshu</p><p class="font-body text-[11px] text-text-muted italic">CTO</p></div></div>
+      <div class="ring-member" style="top:84%; left:34%;"><div class="ring-photo"><img alt="Neeraj Tiwari" src="krishna.jpeg"/></div><div class="ring-label"><p class="font-display text-xs font-bold text-text-main uppercase tracking-wider">Neeraj Tiwari</p><p class="font-body text-[11px] text-text-muted italic">Accounts &amp; Finance</p></div></div>
+      <div class="ring-member" style="top:58%; left:13%;"><div class="ring-photo"><img alt="Annu Singh" src="annu.jpeg"/></div><div class="ring-label"><p class="font-display text-xs font-bold text-text-main uppercase tracking-wider">Annu Singh</p><p class="font-body text-[11px] text-text-muted italic">Resource Manager</p></div></div>
+      <div class="ring-member" style="top:26%; left:20%;"><div class="ring-photo"><img alt="Gautam Singh" src="gautam.jpeg" onerror="this.style.display='none'"/></div><div class="ring-label"><p class="font-display text-xs font-bold text-text-main uppercase tracking-wider">Gautam Singh</p><p class="font-body text-[11px] text-text-muted italic">Co-Founder</p></div></div>
     </div>
-
-    <div class="mt-24 flex justify-center">
-      <svg fill="none" height="20" viewBox="0 0 120 20" width="120">
-        <path d="M0 10 Q 30 0, 60 10 T 120 10" stroke="#3E2723" stroke-linecap="round" stroke-width="2" style="stroke-dasharray:4 4;"/>
-      </svg>
-    </div>
+    <div class="mt-24 flex justify-center"><svg fill="none" height="20" viewBox="0 0 120 20" width="120"><path d="M0 10 Q 30 0, 60 10 T 120 10" stroke="#3E2723" stroke-linecap="round" stroke-width="2" style="stroke-dasharray:4 4;"/></svg></div>
   </section>
 
-
-  <!-- ============================================================
-       PAGE 6 — TASTE THE STORY (Products)
-  ============================================================ -->
+  <!-- ============================================================ PRODUCTS ============================================================ -->
   <section id="product" class="w-full min-h-screen py-24 px-6 border-t-2 border-text-main/20 relative overflow-hidden flex flex-col items-center">
-
-    <div class="absolute top-10 left-10 text-accent opacity-50 rotate-12">
-      <span class="material-symbols-outlined text-6xl">energy_savings_leaf</span>
-    </div>
-    <div class="absolute bottom-20 right-10 text-accent opacity-50 -rotate-12">
-      <span class="material-symbols-outlined text-5xl">eco</span>
-    </div>
-
+    <div class="absolute top-10 left-10 text-accent opacity-50 rotate-12"><span class="material-symbols-outlined text-6xl">energy_savings_leaf</span></div>
+    <div class="absolute bottom-20 right-10 text-accent opacity-50 -rotate-12"><span class="material-symbols-outlined text-5xl">eco</span></div>
     <div class="max-w-6xl w-full flex flex-col items-center text-center z-10">
-
-      <h2 class="font-display text-5xl md:text-7xl font-bold mb-6 tracking-tight">
-        Taste the <span class="rough-underline text-primary">Story</span>
-      </h2>
-      <p class="font-body text-xl md:text-2xl mb-16 max-w-2xl leading-relaxed">
-        From a sister's kitchen to your hands. The authentic Muchhad biscuit, baked with love and nothing else.
-      </p>
-
-      <!-- Product grid -->
+      <h2 class="font-display text-5xl md:text-7xl font-bold mb-6 tracking-tight">Taste the <span class="rough-underline text-primary">Story</span></h2>
+      <p class="font-body text-xl md:text-2xl mb-4 max-w-2xl leading-relaxed">From a sister's kitchen to your hands.</p>
+      <div class="flex items-center gap-3 bg-primary/20 border-2 border-primary px-6 py-3 mb-12">
+        <span class="material-symbols-outlined text-primary" style="font-variation-settings:'FILL' 1;">schedule</span>
+        <span class="font-display text-sm font-bold uppercase tracking-wider text-text-main">Pre-orders open — no payment now, pay on delivery</span>
+      </div>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16 w-full">
-
-        <!-- Product 1 -->
-        <div class="group flex flex-col tilt-1">
-          <div class="relative bg-background-light hard-border p-4 transition-transform group-hover:scale-[1.02] duration-300">
-            <!-- Clickable area for modal -->
-            <div class="product-card-wrap" onclick="openModal(0)">
-              <div class="aspect-square bg-surface hard-border mb-4 overflow-hidden relative">
-                <img alt="Muchhad Heritage Box" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="1.jpg"/>
-                <div class="absolute inset-0 bg-text-main/0 group-hover:bg-text-main/5 transition-all duration-300 flex items-center justify-center">
-                  <span class="material-symbols-outlined text-white text-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 drop-shadow-lg">zoom_in</span>
-                </div>
-              </div>
-              <div class="text-left">
-                <h3 class="font-display text-xl font-bold uppercase tracking-tight">The Heritage Box</h3>
-                <p class="font-body text-sm opacity-75 italic mb-2">150g Roasted Almond</p>
-                <span class="font-display text-lg font-bold">₹99.00</span>
-              </div>
-            </div>
-            <button class="atc-btn" onclick="addToCart(0, event)">
-              <span class="material-symbols-outlined text-base">add_shopping_cart</span>
-              Add to Cart
-            </button>
-          </div>
-        </div>
-
-        <!-- Product 2 -->
-        <div class="group flex flex-col tilt-2 mt-4 lg:mt-8">
-          <div class="relative bg-background-light hard-border p-4 transition-transform group-hover:scale-[1.02] duration-300">
-            <div class="product-card-wrap" onclick="openModal(1)">
-              <div class="aspect-square bg-surface hard-border mb-4 overflow-hidden relative">
-                <img alt="Muchhad Sample Pouch" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="4.jpg"/>
-                <div class="absolute inset-0 bg-text-main/0 group-hover:bg-text-main/5 transition-all duration-300 flex items-center justify-center">
-                  <span class="material-symbols-outlined text-white text-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 drop-shadow-lg">zoom_in</span>
-                </div>
-              </div>
-              <div class="text-left">
-                <h3 class="font-display text-xl font-bold uppercase tracking-tight">The Sample Pouch</h3>
-                <p class="font-body text-sm opacity-75 italic mb-2">Travel-friendly packets</p>
-                <span class="font-display text-lg font-bold">Free Sample</span>
-              </div>
-            </div>
-            <button class="atc-btn" onclick="addToCart(1, event)">
-              <span class="material-symbols-outlined text-base">add_shopping_cart</span>
-              Add to Cart
-            </button>
-          </div>
-        </div>
-
-        <!-- Product 3 -->
-        <div class="group flex flex-col tilt-3">
-          <div class="relative bg-background-light hard-border p-4 transition-transform group-hover:scale-[1.02] duration-300">
-            <div class="product-card-wrap" onclick="openModal(2)">
-              <div class="aspect-square bg-surface hard-border mb-4 overflow-hidden relative">
-                <img alt="Muchhad Glass Jar" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="2.jpg"/>
-                <div class="absolute inset-0 bg-text-main/0 group-hover:bg-text-main/5 transition-all duration-300 flex items-center justify-center">
-                  <span class="material-symbols-outlined text-white text-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 drop-shadow-lg">zoom_in</span>
-                </div>
-              </div>
-              <div class="text-left">
-                <h3 class="font-display text-xl font-bold uppercase tracking-tight">The Glass Jar</h3>
-                <p class="font-body text-sm opacity-75 italic mb-2">Airtight for freshness</p>
-                <span class="font-display text-lg font-bold">₹129.00</span>
-              </div>
-            </div>
-            <button class="atc-btn" onclick="addToCart(2, event)">
-              <span class="material-symbols-outlined text-base">add_shopping_cart</span>
-              Add to Cart
-            </button>
-          </div>
-        </div>
-
-        <!-- Product 4 -->
-        <div class="group flex flex-col tilt-4 mt-4 lg:mt-8">
-          <div class="relative bg-background-light hard-border p-4 transition-transform group-hover:scale-[1.02] duration-300">
-            <div class="product-card-wrap" onclick="openModal(3)">
-              <div class="aspect-square bg-surface hard-border mb-4 overflow-hidden relative">
-                <img alt="Muchhad Variety Set" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="3.jpg"/>
-                <div class="absolute inset-0 bg-text-main/0 group-hover:bg-text-main/5 transition-all duration-300 flex items-center justify-center">
-                  <span class="material-symbols-outlined text-white text-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 drop-shadow-lg">zoom_in</span>
-                </div>
-              </div>
-              <div class="text-left">
-                <h3 class="font-display text-xl font-bold uppercase tracking-tight">The Variety Set</h3>
-                <p class="font-body text-sm opacity-75 italic mb-2">Almond, Pista &amp; More</p>
-                <span class="font-display text-lg font-bold">₹289.00</span>
-              </div>
-            </div>
-            <button class="atc-btn" onclick="addToCart(3, event)">
-              <span class="material-symbols-outlined text-base">add_shopping_cart</span>
-              Add to Cart
-            </button>
-          </div>
-        </div>
-
-      </div><!-- /grid -->
-
-      <!-- CTA -->
+        <div class="group flex flex-col tilt-1"><div class="relative bg-background-light hard-border p-4 transition-transform group-hover:scale-[1.02] duration-300"><div class="product-card-wrap" onclick="openModal(0)"><div class="aspect-square bg-surface hard-border mb-4 overflow-hidden relative"><img alt="Heritage Box" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="1.jpg"/><div class="absolute inset-0 bg-text-main/0 group-hover:bg-text-main/5 transition-all duration-300 flex items-center justify-center"><span class="material-symbols-outlined text-white text-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 drop-shadow-lg">zoom_in</span></div></div><div class="text-left"><h3 class="font-display text-xl font-bold uppercase tracking-tight">The Heritage Box</h3><p class="font-body text-sm opacity-75 italic mb-2">150g Roasted Almond</p><span class="font-display text-lg font-bold">₹99.00</span></div></div><button class="atc-btn" onclick="addToCart(0, event)"><span class="material-symbols-outlined text-base">add_shopping_cart</span>Pre-order</button></div></div>
+        <div class="group flex flex-col tilt-2 mt-4 lg:mt-8"><div class="relative bg-background-light hard-border p-4 transition-transform group-hover:scale-[1.02] duration-300"><div class="product-card-wrap" onclick="openModal(1)"><div class="aspect-square bg-surface hard-border mb-4 overflow-hidden relative"><img alt="Sample Pouch" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="4.jpg"/><div class="absolute inset-0 bg-text-main/0 group-hover:bg-text-main/5 transition-all duration-300 flex items-center justify-center"><span class="material-symbols-outlined text-white text-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 drop-shadow-lg">zoom_in</span></div></div><div class="text-left"><h3 class="font-display text-xl font-bold uppercase tracking-tight">The Sample Pouch</h3><p class="font-body text-sm opacity-75 italic mb-2">Travel-friendly packets</p><span class="font-display text-lg font-bold">Free Sample</span></div></div><button class="atc-btn" onclick="addToCart(1, event)"><span class="material-symbols-outlined text-base">add_shopping_cart</span>Pre-order</button></div></div>
+        <div class="group flex flex-col tilt-3"><div class="relative bg-background-light hard-border p-4 transition-transform group-hover:scale-[1.02] duration-300"><div class="product-card-wrap" onclick="openModal(2)"><div class="aspect-square bg-surface hard-border mb-4 overflow-hidden relative"><img alt="Glass Jar" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="2.jpg"/><div class="absolute inset-0 bg-text-main/0 group-hover:bg-text-main/5 transition-all duration-300 flex items-center justify-center"><span class="material-symbols-outlined text-white text-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 drop-shadow-lg">zoom_in</span></div></div><div class="text-left"><h3 class="font-display text-xl font-bold uppercase tracking-tight">The Glass Jar</h3><p class="font-body text-sm opacity-75 italic mb-2">Airtight for freshness</p><span class="font-display text-lg font-bold">₹129.00</span></div></div><button class="atc-btn" onclick="addToCart(2, event)"><span class="material-symbols-outlined text-base">add_shopping_cart</span>Pre-order</button></div></div>
+        <div class="group flex flex-col tilt-4 mt-4 lg:mt-8"><div class="relative bg-background-light hard-border p-4 transition-transform group-hover:scale-[1.02] duration-300"><div class="product-card-wrap" onclick="openModal(3)"><div class="aspect-square bg-surface hard-border mb-4 overflow-hidden relative"><img alt="Variety Set" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="3.jpg"/><div class="absolute inset-0 bg-text-main/0 group-hover:bg-text-main/5 transition-all duration-300 flex items-center justify-center"><span class="material-symbols-outlined text-white text-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 drop-shadow-lg">zoom_in</span></div></div><div class="text-left"><h3 class="font-display text-xl font-bold uppercase tracking-tight">The Variety Set</h3><p class="font-body text-sm opacity-75 italic mb-2">Almond, Pista &amp; More</p><span class="font-display text-lg font-bold">₹289.00</span></div></div><button class="atc-btn" onclick="addToCart(3, event)"><span class="material-symbols-outlined text-base">add_shopping_cart</span>Pre-order</button></div></div>
+      </div>
       <button onclick="openCart()" class="h-16 px-12 bg-primary text-text-main font-display text-xl font-bold uppercase tracking-[0.15em] hard-border hover:bg-[#e6c13d] transition-colors shadow-[4px_4px_0px_0px_#3E2723] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_#3E2723] active:translate-y-[4px] active:shadow-none flex items-center gap-3">
-        Grab your Pack
-        <span class="material-symbols-outlined">shopping_basket</span>
+        Reserve Your Pack <span class="material-symbols-outlined">shopping_basket</span>
       </button>
-
       <div class="mt-8 flex items-center gap-2 font-body text-sm font-medium opacity-70">
         <span class="material-symbols-outlined text-base">local_shipping</span>
         Free shipping on orders over ₹499
@@ -958,10 +723,7 @@
     </div>
   </section>
 
-
-  <!-- ============================================================
-       FOOTER
-  ============================================================ -->
+  <!-- ============================================================ FOOTER ============================================================ -->
   <footer class="bg-background-dark text-background-light w-full py-12 px-6 border-t-4 border-primary">
     <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
       <div class="flex flex-col items-center md:items-start">
@@ -969,338 +731,25 @@
         <p class="font-body text-sm opacity-80">Born in a home, baked for everyone.</p>
       </div>
       <div class="flex gap-6 font-body text-sm">
-        <a href="#origin"  class="hover:text-primary transition-colors underline decoration-primary decoration-2 underline-offset-4">Our Story</a>
-        <a href="#"        class="hover:text-primary transition-colors underline decoration-primary decoration-2 underline-offset-4">Contact</a>
-        <a href="#"        class="hover:text-primary transition-colors underline decoration-primary decoration-2 underline-offset-4">Wholesale</a>
+        <a href="#origin" class="hover:text-primary transition-colors underline decoration-primary decoration-2 underline-offset-4">Our Story</a>
+        <a href="#" class="hover:text-primary transition-colors underline decoration-primary decoration-2 underline-offset-4">Contact</a>
+        <a href="#" class="hover:text-primary transition-colors underline decoration-primary decoration-2 underline-offset-4">Wholesale</a>
       </div>
-      <div class="font-body text-sm opacity-60 flex items-center gap-1">
-        © 2024 Muchhad Biscuits.
-        <span class="material-symbols-outlined text-xs" style="font-variation-settings:'FILL' 1;">favorite</span>
-      </div>
+      <div class="font-body text-sm opacity-60 flex items-center gap-1">© 2024 Muchhad Biscuits. <span class="material-symbols-outlined text-xs" style="font-variation-settings:'FILL' 1;">favorite</span></div>
     </div>
   </footer>
 
-
   <!-- ============================================================
-       JAVASCRIPT
+       SCRIPTS — load order matters:
+       1. Supabase CDN  (required by db.js)
+       2. EmailJS CDN   (required by app.js)
+       3. db.js         (database layer)
+       4. app.js        (main app logic)
   ============================================================ -->
-  <script>
-    /* ─────────────────────────────────────────────
-       PRODUCT DATA
-    ───────────────────────────────────────────── */
-    const PRODUCTS = [
-      {
-        id: 0,
-        name: "The Heritage Box",
-        subtitle: "150g · Roasted Almond",
-        category: "Signature Collection",
-        price: 99,
-        priceDisplay: "₹99.00",
-        weight: "150g",
-        badge: "Bestseller",
-        img: "1.jpg",
-        description: "Our original creation — the biscuit that started it all. The Heritage Box packs the same love and care that first inspired Vikas in his sister's kitchen. Slow-baked whole-wheat biscuits with hand-roasted almonds, sweetened only with pure jaggery. No maida, no refined sugar, no preservatives. Just the real deal.",
-        ingredients: ["Whole Wheat Flour", "Jaggery", "Roasted Almonds", "Cold-Pressed Ghee", "Rock Salt", "Cardamom"],
-        perks: ["No Preservatives", "Jaggery Sweetened", "High Protein", "Slow Baked"]
-      },
-      {
-        id: 1,
-        name: "The Sample Pouch",
-        subtitle: "Travel-friendly · Try-before-you-commit",
-        category: "Try It First",
-        price: 0,
-        priceDisplay: "Free Sample",
-        weight: "30g",
-        badge: "Free",
-        img: "4.jpg",
-        description: "Not sure yet? We get it. Try a travel-sized pouch of our most popular flavour before you commit to the full box. Each sample pouch contains 4–5 biscuits — enough to fall in love. One free sample per household. Because we believe in the biscuit, not the hard sell.",
-        ingredients: ["Whole Wheat Flour", "Jaggery", "Roasted Almonds", "Ghee", "Rock Salt"],
-        perks: ["Try Before You Buy", "No Commitment", "Perfect for Travel", "No Artificial Flavours"]
-      },
-      {
-        id: 2,
-        name: "The Glass Jar",
-        subtitle: "Airtight · Stays fresh longer",
-        category: "Premium Packaging",
-        price: 129,
-        priceDisplay: "₹129.00",
-        weight: "150g",
-        badge: "Most Fresh",
-        img: "2.jpg",
-        description: "Same beloved Heritage recipe, stored in a handsome reusable glass jar that keeps every biscuit as crisp as day one. The airtight seal locks in the natural flavours of cardamom and roasted almonds. Once you finish, the jar is yours — perfect for your chai stash, spice storage, or just looking beautiful on your shelf.",
-        ingredients: ["Whole Wheat Flour", "Jaggery", "Roasted Almonds", "Cold-Pressed Ghee", "Rock Salt", "Cardamom", "Fennel Seeds"],
-        perks: ["Reusable Glass Jar", "Airtight Freshness", "Zero Plastic", "Shelf-Ready"]
-      },
-      {
-        id: 3,
-        name: "The Variety Set",
-        subtitle: "Almond, Pista & More",
-        category: "Gift Collection",
-        price: 289,
-        priceDisplay: "₹289.00",
-        weight: "3 × 100g",
-        badge: "Great Gift",
-        img: "3.jpg",
-        description: "Can't pick just one? Neither could we. The Variety Set brings together three distinct flavours — Roasted Almond, Pista Rose, and Sesame Jaggery — each one a love letter to a different region of India. Gift it to someone you care about, or just treat yourself to the full Muchhad story in one beautifully wrapped set.",
-        ingredients: ["Whole Wheat Flour", "Jaggery", "Roasted Almonds", "Pistachios", "Rose Petals", "Sesame Seeds", "Cold-Pressed Ghee", "Rock Salt", "Cardamom"],
-        perks: ["3 Unique Flavours", "Gift-Ready Box", "No Refined Sugar", "Handcrafted"]
-      }
-    ];
-
-    /* ─────────────────────────────────────────────
-       CART STATE
-    ───────────────────────────────────────────── */
-    let cart = []; // [{productId, qty}]
-
-    function getCartItem(id) {
-      return cart.find(i => i.productId === id);
-    }
-
-    function addToCart(productId, event) {
-      if (event) event.stopPropagation();
-      const existing = getCartItem(productId);
-      if (existing) {
-        existing.qty++;
-      } else {
-        cart.push({ productId, qty: 1 });
-      }
-      renderCart();
-      updateBadge();
-      flashCartBtn(event);
-    }
-
-    function removeFromCart(productId) {
-      cart = cart.filter(i => i.productId !== productId);
-      renderCart();
-      updateBadge();
-    }
-
-    function changeQty(productId, delta) {
-      const item = getCartItem(productId);
-      if (!item) return;
-      item.qty += delta;
-      if (item.qty <= 0) removeFromCart(productId);
-      else { renderCart(); updateBadge(); }
-    }
-
-    function cartTotal() {
-      return cart.reduce((sum, item) => {
-        const p = PRODUCTS[item.productId];
-        return sum + p.price * item.qty;
-      }, 0);
-    }
-
-    function updateBadge() {
-      const total = cart.reduce((s, i) => s + i.qty, 0);
-      const badge = document.getElementById('cart-badge');
-      badge.textContent = total;
-      if (total > 0) badge.classList.add('visible');
-      else badge.classList.remove('visible');
-    }
-
-    function flashCartBtn(event) {
-      if (!event) return;
-      const btn = event.currentTarget || event.target;
-      btn.classList.add('added');
-      btn.innerHTML = '<span class="material-symbols-outlined text-base" style="font-variation-settings:\'FILL\' 1;">check_circle</span> Added!';
-      setTimeout(() => {
-        btn.classList.remove('added');
-        btn.innerHTML = '<span class="material-symbols-outlined text-base">add_shopping_cart</span> Add to Cart';
-      }, 1400);
-    }
-
-    /* ─────────────────────────────────────────────
-       RENDER CART
-    ───────────────────────────────────────────── */
-    function renderCart() {
-      const list = document.getElementById('cart-items-list');
-      const totalEl = document.getElementById('cart-total');
-
-      if (cart.length === 0) {
-        list.innerHTML = `
-          <div class="empty-cart-state">
-            <span class="material-symbols-outlined text-6xl text-text-muted opacity-40">shopping_basket</span>
-            <p class="font-display text-xl font-bold text-text-muted uppercase tracking-wider">Your cart is empty</p>
-            <p class="font-body text-sm text-text-muted italic">Add some homemade goodness!</p>
-            <button onclick="closeCart(); document.getElementById('product').scrollIntoView({behavior:'smooth'})" class="mt-4 h-10 px-6 border-2 border-text-main font-display text-xs font-bold uppercase tracking-widest hover:bg-text-main hover:text-background-light transition-all">
-              Browse Products
-            </button>
-          </div>`;
-        totalEl.textContent = '₹0.00';
-        document.getElementById('checkout-btn').disabled = true;
-        document.getElementById('checkout-btn').style.opacity = '0.5';
-        document.getElementById('checkout-btn').style.cursor = 'not-allowed';
-        return;
-      }
-
-      document.getElementById('checkout-btn').disabled = false;
-      document.getElementById('checkout-btn').style.opacity = '1';
-      document.getElementById('checkout-btn').style.cursor = 'pointer';
-
-      list.innerHTML = cart.map(item => {
-        const p = PRODUCTS[item.productId];
-        return `
-          <div class="cart-item">
-            <img src="${p.img}" alt="${p.name}" class="cart-item-img sepia-img" />
-            <div class="cart-item-meta">
-              <p class="font-display text-sm font-bold uppercase tracking-tight text-text-main leading-tight">${p.name}</p>
-              <p class="font-body text-xs text-text-muted italic mt-0.5">${p.subtitle}</p>
-              <p class="font-display text-base font-bold text-text-main mt-2">${p.priceDisplay}</p>
-              <div class="flex items-center gap-0 mt-3">
-                <button class="qty-btn" onclick="changeQty(${p.id}, -1)">−</button>
-                <div class="cart-qty-display">${item.qty}</div>
-                <button class="qty-btn" onclick="changeQty(${p.id}, 1)">+</button>
-                <button onclick="removeFromCart(${p.id})" class="ml-auto flex items-center justify-center text-text-muted hover:text-text-main transition-colors">
-                  <span class="material-symbols-outlined text-base">delete</span>
-                </button>
-              </div>
-            </div>
-          </div>`;
-      }).join('');
-
-      const total = cartTotal();
-      totalEl.textContent = total === 0 ? 'Free' : `₹${total.toFixed(2)}`;
-    }
-
-    /* ─────────────────────────────────────────────
-       CART OPEN / CLOSE
-    ───────────────────────────────────────────── */
-    function openCart() {
-      renderCart();
-      document.getElementById('cart-sidebar').classList.add('open');
-      document.getElementById('cart-backdrop').classList.add('open');
-      document.body.style.overflow = 'hidden';
-    }
-
-    function closeCart() {
-      document.getElementById('cart-sidebar').classList.remove('open');
-      document.getElementById('cart-backdrop').classList.remove('open');
-      document.body.style.overflow = '';
-    }
-
-    /* ─────────────────────────────────────────────
-       CHECKOUT
-    ───────────────────────────────────────────── */
-    function handleCheckout() {
-      if (cart.length === 0) return;
-      closeCart();
-      cart = [];
-      updateBadge();
-      // Show toast
-      const toast = document.getElementById('checkout-toast');
-      toast.classList.add('show');
-      setTimeout(() => toast.classList.remove('show'), 4000);
-    }
-
-    /* ─────────────────────────────────────────────
-       PRODUCT MODAL
-    ───────────────────────────────────────────── */
-    let currentModalProduct = null;
-
-    function openModal(productId) {
-      const p = PRODUCTS[productId];
-      currentModalProduct = productId;
-
-      document.getElementById('modal-img').src = p.img;
-      document.getElementById('modal-img').alt = p.name;
-      document.getElementById('modal-badge').textContent = p.badge;
-      document.getElementById('modal-category').textContent = p.category;
-      document.getElementById('modal-title').textContent = p.name;
-      document.getElementById('modal-subtitle').textContent = p.subtitle;
-      document.getElementById('modal-description').textContent = p.description;
-      document.getElementById('modal-price').textContent = p.priceDisplay;
-      document.getElementById('modal-weight').textContent = p.weight;
-
-      // Ingredients
-      const ingEl = document.getElementById('modal-ingredients');
-      ingEl.innerHTML = p.ingredients.map(ing =>
-        `<li class="flex items-center gap-1.5 bg-background-light border border-text-main/40 px-3 py-1 font-body text-xs text-text-main">
-          <span class="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0"></span>${ing}
-        </li>`
-      ).join('');
-
-      // Perks
-      const perksEl = document.getElementById('modal-perks');
-      perksEl.innerHTML = p.perks.map(perk =>
-        `<span class="flex items-center gap-1.5 font-display text-xs font-bold uppercase tracking-wider text-text-muted">
-          <span class="material-symbols-outlined text-primary text-sm" style="font-variation-settings:'FILL' 1;">check_circle</span>${perk}
-        </span>`
-      ).join('');
-
-      // Reset add-to-cart button in modal
-      const btn = document.getElementById('modal-atc-btn');
-      btn.classList.remove('added');
-      btn.innerHTML = '<span class="material-symbols-outlined text-base">add_shopping_cart</span> Add to Cart';
-      btn.style.pointerEvents = 'all';
-
-      document.getElementById('product-modal').classList.add('open');
-      document.body.style.overflow = 'hidden';
-    }
-
-    function closeModal() {
-      document.getElementById('product-modal').classList.remove('open');
-      document.body.style.overflow = '';
-      currentModalProduct = null;
-    }
-
-    function modalAddToCart() {
-      if (currentModalProduct === null) return;
-      addToCart(currentModalProduct, null);
-      const btn = document.getElementById('modal-atc-btn');
-      btn.classList.add('added');
-      btn.innerHTML = '<span class="material-symbols-outlined text-base" style="font-variation-settings:\'FILL\' 1;">check_circle</span> Added to Cart!';
-      setTimeout(() => {
-        btn.classList.remove('added');
-        btn.innerHTML = '<span class="material-symbols-outlined text-base">add_shopping_cart</span> Add to Cart';
-      }, 1800);
-    }
-
-    /* ─────────────────────────────────────────────
-       KEYBOARD NAVIGATION
-    ───────────────────────────────────────────── */
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        closeModal();
-        closeCart();
-      }
-    });
-
-    /* ─────────────────────────────────────────────
-       RING ANIMATION (team section)
-    ───────────────────────────────────────────── */
-    (function() {
-      const container = document.querySelector('.ring-container');
-      const members   = document.querySelectorAll('.ring-member');
-      // 7 members · 360° ÷ 7 ≈ 51.43° apart
-      const baseAngles = [0, 51.43, 102.86, 154.29, 205.71, 257.14, 308.57];
-      const R = 38;
-      let offset  = 0;
-      let paused  = false;
-      let last    = null;
-
-      members.forEach(m => {
-        m.addEventListener('mouseenter', () => paused = true);
-        m.addEventListener('mouseleave', () => paused = false);
-      });
-
-      function tick(ts) {
-        if (last !== null && !paused) {
-          offset += (ts - last) * 0.018;
-        }
-        last = ts;
-        members.forEach((m, i) => {
-          const deg = (baseAngles[i] + offset) * Math.PI / 180;
-          const left = 50 + R * Math.sin(deg);
-          const top  = 50 - R * Math.cos(deg);
-          m.style.left = left + '%';
-          m.style.top  = top  + '%';
-        });
-        requestAnimationFrame(tick);
-      }
-
-      requestAnimationFrame(tick);
-    })();
-  </script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script src="db.js"></script>
+  <script src="app.js"></script>
 
 </body>
 </html>
